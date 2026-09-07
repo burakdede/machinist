@@ -120,10 +120,10 @@ list, that is how the two machines drift apart.
 | `dotfiles` | Symlinks `dotfiles/` and `mac/configs/` into `$HOME` |
 | `configure` | Prompts for git name/email → writes `~/.gitconfig.local` |
 | `shell` | Sets Homebrew zsh as default shell, installs antidote + powerlevel10k |
+| `sdk` | SDKMAN -- Java, Kotlin |
 | `editor` | Neovim via Homebrew, `vi`/`vim` shims, lazy.nvim plugin bootstrap |
 | `multiplexer` | Tmux config wiring + TPM (Tmux Plugin Manager) |
 | `terminal` | WezTerm via Homebrew Cask |
-| `sdk` | SDKMAN -- Java, Kotlin |
 | `agents` | Claude Code, Codex, OpenCode -- install checks + central config symlinks |
 | `git` | GitHub SSH key generation and connection test |
 | `macos` | macOS system defaults via `defaults write` |
@@ -140,10 +140,10 @@ Re-install: `MACHINIST_UPGRADE=1 ./run.sh --only editor`
 | `dotfiles` | Symlinks `dotfiles/` into `$HOME` |
 | `configure` | Prompts for git name/email → writes `~/.gitconfig.local` |
 | `shell` | Installs zsh, sets it as default shell |
+| `sdk` | SDKMAN -- Java, Kotlin |
 | `editor` | Neovim from GitHub releases, `vi`/`vim`/`editor` alternatives |
 | `multiplexer` | Tmux config wiring + TPM |
 | `terminal` | WezTerm from GitHub releases, sets as default terminal |
-| `sdk` | SDKMAN -- Java, Kotlin |
 | `agents` | Claude Code, Codex, OpenCode -- install checks + central config symlinks |
 | `git` | GitHub SSH key generation and connection test |
 | `settings` | GNOME desktop settings (font, scaling, cursor) |

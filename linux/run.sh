@@ -37,10 +37,10 @@ Valid STEP values (run in this order on a fresh machine):
   dotfiles        Symlink config files into \$HOME
   configure       Git identity prompts -- writes to ~/.gitconfig.local
   shell           Install zsh and set it as the default login shell
+  sdk             SDKMAN toolchain (Java, Kotlin, …)
   editor          Install Neovim, register as vim/vi/editor
   multiplexer     Tmux TPM bootstrap and config wiring
   terminal        Install WezTerm, set as default terminal
-  sdk             SDKMAN toolchain (Java, Kotlin, …)
   agents          Claude Code, Codex, OpenCode -- install checks + central config symlinks
   git             GitHub SSH key setup (interactive)
   settings        GNOME desktop preferences (requires desktop session)
@@ -270,13 +270,13 @@ main() {
         "configure|$ROOT_DIR/configure/configure.sh|Interactive configuration"
         # 4. Shell -- change default shell early; later tools benefit from zsh being active
         "shell|$ROOT_DIR/shell/shell.sh|Zsh shell"
-        # 5. Editor + multiplexer -- independent of each other, depend on system
+        # 5. Language SDKs -- jdtls in the editor needs a JDK
+        "sdk|$ROOT_DIR/sdk/sdk.sh|SDKMAN toolchain"
+        # 6. Editor + multiplexer -- independent of each other, depend on system
         "editor|$ROOT_DIR/editor/editor.sh|Neovim editor"
         "multiplexer|$ROOT_DIR/multiplexer/multiplexer.sh|Tmux multiplexer"
-        # 6. Terminal -- launched last so it picks up zsh as default shell
+        # 7. Terminal -- launched last so it picks up zsh as default shell
         "terminal|$ROOT_DIR/terminal/terminal.sh|WezTerm terminal emulator"
-        # 7. Language SDKs -- heavy, some LSP servers (jdtls) need this
-        "sdk|$ROOT_DIR/sdk/sdk.sh|SDKMAN toolchain"
         # 8. Agent tooling -- needs npm/node from system
         "agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex, OpenCode)"
     )

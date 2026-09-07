@@ -12,10 +12,10 @@
 #  2. dotfiles    -- symlink shared configs into $HOME from dotfiles/
 #  3. configure   -- interactive git identity prompts → ~/.gitconfig.local
 #  4. shell       -- set zsh as default shell, install antidote + powerlevel10k
-#  5. editor      -- neovim + lazy.nvim plugin bootstrap, vi/vim shims
-#  6. multiplexer -- tmux config wiring + TPM (Tmux Plugin Manager)
-#  7. terminal    -- WezTerm via Homebrew Cask
-#  8. sdk         -- SDKMAN (Java, Kotlin, …)
+#  5. sdk         -- SDKMAN (Java, Kotlin, …)
+#  6. editor      -- neovim + lazy.nvim plugin bootstrap, vi/vim shims
+#  7. multiplexer -- tmux config wiring + TPM (Tmux Plugin Manager)
+#  8. terminal    -- WezTerm via Homebrew Cask
 #  9. agents      -- Claude Code, Codex, OpenCode -- install checks + central config symlinks
 # 10. git         -- GitHub SSH key setup (interactive; skippable)
 # 11. macos       -- macOS system defaults via `defaults write` (skippable)
@@ -73,10 +73,10 @@ Valid STEP values (run in this order on a fresh machine):
   dotfiles        Symlink shared configs from dotfiles/ into \$HOME
   configure       Git identity prompts -- writes to ~/.gitconfig.local
   shell           Set zsh as default shell, install antidote + powerlevel10k
+  sdk             SDKMAN toolchain (Java, Kotlin, …)
   editor          Neovim via Homebrew + lazy.nvim bootstrap, vi/vim shims
   multiplexer     Tmux config wiring + TPM (Tmux Plugin Manager)
   terminal        WezTerm via Homebrew Cask
-  sdk             SDKMAN toolchain (Java, Kotlin, …)
   agents          Claude Code, Codex, OpenCode -- install checks + central config symlinks
   git             GitHub SSH key setup (interactive)
   macos           macOS system defaults via 'defaults write'
@@ -259,10 +259,10 @@ main() {
         "dotfiles|$ROOT_DIR/dotfiles.sh|Dotfiles (shared dotfiles/ directory)"
         "configure|$ROOT_DIR/configure/configure.sh|Interactive configuration (git identity)"
         "shell|$ROOT_DIR/shell/shell.sh|Zsh shell"
+        "sdk|$ROOT_DIR/sdk/sdk.sh|SDKMAN toolchain"
         "editor|$ROOT_DIR/editor/editor.sh|Neovim editor"
         "multiplexer|$ROOT_DIR/multiplexer/multiplexer.sh|Tmux multiplexer"
         "terminal|$ROOT_DIR/terminal/terminal.sh|WezTerm terminal emulator"
-        "sdk|$ROOT_DIR/sdk/sdk.sh|SDKMAN toolchain"
         "agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex, OpenCode)"
     )
 

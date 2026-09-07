@@ -687,6 +687,18 @@ class BootstrapRepoTests(unittest.TestCase):
                 step, result.stdout, f"Step {step!r} missing from --help output"
             )
 
+    def test_sdk_runs_before_editor_on_both_platforms(self):
+        """The JDK must exist before the editor bootstraps Java LSP tooling."""
+        for relative_path in ("run.sh", "../mac/run.sh"):
+            content = (REPO_ROOT / relative_path).read_text(encoding="utf-8")
+            sdk_position = content.index('"sdk|')
+            editor_position = content.index('"editor|')
+            self.assertLess(
+                sdk_position,
+                editor_position,
+                f"SDK must precede editor in {relative_path}",
+            )
+
     def create_sourceable_terminal_script(self, directory: Path) -> Path:
         original = (REPO_ROOT / "terminal" / "terminal.sh").read_text(encoding="utf-8")
         lines = original.splitlines()
