@@ -73,7 +73,7 @@ detect_platform() {
             # Warn, do not block: a non-LTS release usually works, it is just
             # not what CI exercises.
             case "${VERSION_ID:-}" in
-                20.04|22.04|24.04|26.04) ;;
+                22.04|24.04) ;;
                 "") ui_warn "Could not determine the Ubuntu version; proceeding anyway." ;;
                 *)  ui_warn "Ubuntu ${VERSION_ID} is not an LTS release. CI only covers LTS, so expect rough edges." ;;
             esac

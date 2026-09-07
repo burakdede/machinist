@@ -159,7 +159,7 @@ Re-install: `MACHINIST_UPGRADE=1 ./run.sh --only editor`
 | | |
 |---|---|
 | macOS | 14+ on Apple Silicon or Intel. Xcode Command Line Tools (`xcode-select --install`) |
-| Ubuntu | LTS: 22.04, 24.04 or 26.04, amd64 or arm64 |
+| Ubuntu | LTS: 22.04 or 24.04, amd64 or arm64 |
 | Both | `git` and `curl`, which `install.sh` checks for before doing anything |
 
 CI exercises `ubuntu-24.04` and `macos-15` on every push.
