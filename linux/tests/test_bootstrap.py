@@ -428,6 +428,37 @@ class BootstrapRepoTests(unittest.TestCase):
             self.assertNotIn("iac", output)
             self.assertNotIn("ufw", output)
 
+    def test_ubuntu_codename_validation(self):
+        """APT repository setup must reject missing or invalid Ubuntu metadata."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            valid = tmp_path / "valid-os-release"
+            valid.write_text('ID="ubuntu"\nVERSION_CODENAME=noble\n', encoding="utf-8")
+            invalid = tmp_path / "invalid-os-release"
+            invalid.write_text('ID="ubuntu"\n', encoding="utf-8")
+            sourceable = self.create_sourceable_system_script(tmp_path)
+
+            command = textwrap.dedent(
+                f'''\
+                source "{REPO_ROOT / "utils" / "utils.sh"}"
+                log_warn() {{ :; }}
+                source "{sourceable}"
+                export MACHINIST_OS_RELEASE_FILE="{valid}"
+                printf 'valid:%s\\n' "$(ubuntu_codename)"
+                export MACHINIST_OS_RELEASE_FILE="{invalid}"
+                if ubuntu_codename; then
+                    printf 'invalid:accepted\\n'
+                else
+                    printf 'invalid:rejected\\n'
+                fi
+                '''
+            )
+            result = self.run_cmd(["bash", "-lc", command])
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(
+                result.stdout.splitlines(), ["valid:noble", "invalid:rejected"]
+            )
+
     def test_dotfiles_script_is_idempotent(self):
         if not (DOTFILES_DIR / ".vimrc").exists():
             self.skipTest("dotfiles directory not found")

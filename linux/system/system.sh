@@ -52,6 +52,33 @@ RUST_VERSION="${RUST_VERSION:-}"
 # python, node, go and the IaC tools are NOT pinned here. They live in the
 # shared dotfiles/.config/mise/config.toml and are installed with `mise install`.
 
+ubuntu_codename() {
+    local os_release="${MACHINIST_OS_RELEASE_FILE:-/etc/os-release}"
+    local distro_id=""
+    local version_codename=""
+
+    if [[ ! -r "$os_release" ]]; then
+        log_warn "Ubuntu release metadata is unavailable: $os_release"
+        return 1
+    fi
+
+    unset ID VERSION_CODENAME
+    # shellcheck source=/dev/null
+    . "$os_release"
+    distro_id="${ID:-}"
+    version_codename="${VERSION_CODENAME:-}"
+    if [[ "$distro_id" != "ubuntu" ]]; then
+        log_warn "Expected Ubuntu release metadata, found: ${distro_id:-unknown}"
+        return 1
+    fi
+    if [[ ! "$version_codename" =~ ^[a-z][a-z0-9-]*$ ]]; then
+        log_warn "Ubuntu release codename is missing or invalid."
+        return 1
+    fi
+
+    printf '%s\n' "$version_codename"
+}
+
 ensure_core_packages() {
     sudo_run apt-get update
     sudo_run apt-get install -y --no-install-recommends \
@@ -185,8 +212,10 @@ setup_tailscale_repo() {
     fi
 
     local codename
-    # shellcheck source=/dev/null
-    codename="$(. /etc/os-release && printf '%s' "$VERSION_CODENAME")"
+    if ! codename="$(ubuntu_codename)"; then
+        log_warn "Skipping Tailscale because the Ubuntu codename is unavailable."
+        return 0
+    fi
 
     sudo_run mkdir -p /usr/share/keyrings
     if ! curl -fsSL "https://pkgs.tailscale.com/stable/ubuntu/${codename}.noarmor.gpg" \
@@ -364,8 +393,10 @@ setup_docker_repo() {
         sudo_run chmod a+r /etc/apt/keyrings/docker.gpg
 
         local codename
-        # shellcheck source=/dev/null
-        codename="$(. /etc/os-release && printf '%s' "$VERSION_CODENAME")"
+        if ! codename="$(ubuntu_codename)"; then
+            log_warn "Skipping Docker because the Ubuntu codename is unavailable."
+            return 0
+        fi
         printf 'deb [arch=%s signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu %s stable\n' \
             "$(dpkg --print-architecture)" "$codename" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
