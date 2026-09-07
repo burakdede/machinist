@@ -135,6 +135,17 @@ for native. Then actually look at the image. Functional tests passing is not
 evidence that the screen looks right, and attaching the screenshot to the PR
 is what lets a reviewer skip reproducing it.
 
+Start with the cheapest loop that can answer the question. For a layout or
+component question that is a preview — SwiftUI's `#Preview`, Storybook, a
+harness page — rendering several states at once in a second. A full build,
+install and launch to inspect one row turns a layout question into trial and
+error, and the wrong cause gets "fixed" on the way to the right one. Render the
+component in isolation first; go to the running app for data, navigation and
+scrolling.
+
+If you cannot see the canvas, build the equivalent: a screen that renders the
+component's awkward cases, captured as an image you can actually read.
+
 Inside a project that has its own Playwright, use that one: browser binaries
 are pinned to the package version, so the global install and a project's may
 disagree.
