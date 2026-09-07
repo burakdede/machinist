@@ -406,6 +406,7 @@ class BootstrapRepoTests(unittest.TestCase):
                 export MACHINIST_SKIP_RUST=1
                 export MACHINIST_SKIP_IAC_TOOLS=1
                 export MACHINIST_SKIP_UFW=1
+                export MACHINIST_SYSTEM_UPGRADE=1
                 main
                 """
             )
@@ -427,6 +428,41 @@ class BootstrapRepoTests(unittest.TestCase):
             self.assertNotIn("rust", output)
             self.assertNotIn("iac", output)
             self.assertNotIn("ufw", output)
+
+    def test_system_upgrade_is_opt_in(self):
+        """System setup must not upgrade unrelated host packages by default."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            log_file = tmp_path / "apt.log"
+            sourceable_script = self.create_sourceable_system_script(tmp_path)
+            command = textwrap.dedent(
+                f'''\
+                source "{REPO_ROOT / "utils" / "utils.sh"}"
+                source "{sourceable_script}"
+                echo_header() {{ :; }}
+                log_info() {{ :; }}
+                sudo_run() {{ printf '%s\\n' "$*" >> "{log_file}"; }}
+                unset MACHINIST_SYSTEM_UPGRADE
+                upgrade_base_system
+                if [[ -f "{log_file}" ]]; then
+                    printf 'default:ran\\n'
+                else
+                    printf 'default:skipped\\n'
+                fi
+                export MACHINIST_SYSTEM_UPGRADE=1
+                upgrade_base_system
+                printf 'enabled:%s\\n' "$(tr '\\n' ',' < "{log_file}")"
+                '''
+            )
+            result = self.run_cmd(["bash", "-lc", command])
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(
+                result.stdout.splitlines(),
+                [
+                    "default:skipped",
+                    "enabled:apt-get update,apt-get upgrade -y,apt-get autoremove -y,",
+                ],
+            )
 
     def test_ubuntu_codename_validation(self):
         """APT repository setup must reject missing or invalid Ubuntu metadata."""

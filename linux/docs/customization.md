@@ -204,3 +204,10 @@ MACHINIST_UPGRADE=1 ./run.sh --only system
 ```
 
 Use this deliberately. The default behavior favors stability over constant upgrades.
+
+The system step does not upgrade or autoremove unrelated host packages by
+default. To request that broader maintenance pass explicitly:
+
+```bash
+MACHINIST_SYSTEM_UPGRADE=1 ./run.sh --only system
+```

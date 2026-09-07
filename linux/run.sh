@@ -49,6 +49,7 @@ Valid STEP values (run in this order on a fresh machine):
 
 Environment variable overrides (identical on macOS and Ubuntu):
   MACHINIST_UPGRADE=1            Re-install tools even if already present.
+  MACHINIST_SYSTEM_UPGRADE=1     Run apt upgrade and autoremove during system setup.
   MACHINIST_SKIP_<STEP>=1        Skip a specific step, e.g. MACHINIST_SKIP_SDK=1
   MACHINIST_GIT_NAME / _EMAIL    Pre-seed git identity for unattended runs.
   MACHINIST_LOG_FILE             Override the run log path.

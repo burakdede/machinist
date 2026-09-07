@@ -86,6 +86,11 @@ ensure_core_packages() {
 }
 
 upgrade_base_system() {
+    if [[ "${MACHINIST_SYSTEM_UPGRADE:-0}" != "1" ]]; then
+        log_info "Skipping broad APT upgrade; set MACHINIST_SYSTEM_UPGRADE=1 to enable."
+        return 0
+    fi
+
     echo_header "System updates"
     sudo_run apt-get update
     sudo_run apt-get upgrade -y
