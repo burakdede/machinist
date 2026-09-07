@@ -26,6 +26,11 @@ Because the defaults are off, a binding that is not in `wezterm.lua` does not
 exist. If something you expect is missing, add it there rather than assuming
 WezTerm provides it.
 
+The tab bar uses WezTerm's native left-aligned layout. The active tab uses a
+bright Dracula purple background with dark text; inactive tabs use the dark
+background with light text, so the active tab remains obvious without a
+periodic status-bar layout calculation.
+
 **Linux uses the native Wayland backend** when the session is Wayland, rather
 than falling back to XWayland. XWayland costs fractional scaling and gives
 blurry text on HiDPI, which is the common case on modern GNOME. If your

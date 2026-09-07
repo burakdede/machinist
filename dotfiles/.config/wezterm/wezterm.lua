@@ -66,6 +66,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false -- retro tab bar; styled via colors below
 config.tab_bar_at_bottom = true
 config.tab_max_width = 32
+config.show_new_tab_button_in_tab_bar = false
 
 -- Tab title: explicit title > process (if not shell) > cwd basename > "?"
 -- Unseen output in inactive tabs is marked with a dot prefix.
