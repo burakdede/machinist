@@ -145,6 +145,7 @@ config.disable_default_key_bindings = true
 
 local act = wezterm.action
 local mod = is_mac and "SUPER" or "SHIFT|CTRL"
+local reload_mod = is_mac and "SUPER|SHIFT" or "SHIFT|CTRL"
 -- Pane navigation adds SHIFT on macOS so <mod>+k stays free for clear-scrollback.
 local pane_mod = is_mac and "SUPER|SHIFT" or "SHIFT|CTRL|ALT"
 
@@ -172,6 +173,7 @@ config.keys = {
 	-- ── Window ─────────────────────────────────────────────────────────────
 	{ key = "n", mods = mod, action = act.SpawnWindow },
 	{ key = "F11", action = act.ToggleFullScreen },
+	{ key = "r", mods = reload_mod, action = act.ReloadConfiguration },
 
 	-- ── Copy mode (vim-like keyboard text selection) ───────────────────────
 	{ key = "x", mods = mod, action = act.ActivateCopyMode },
