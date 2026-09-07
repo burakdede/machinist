@@ -62,8 +62,8 @@ detect_platform() {
             # shellcheck disable=SC1091
             . /etc/os-release
 
-            case "${ID:-}${ID_LIKE:-}" in
-                *ubuntu*|*debian*) ;;
+            case "${ID:-}" in
+                ubuntu) ;;
                 *) die "This setup targets Ubuntu LTS. Found '${PRETTY_NAME:-${ID:-unknown}}', which is not supported." ;;
             esac
 

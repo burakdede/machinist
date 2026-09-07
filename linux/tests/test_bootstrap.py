@@ -888,6 +888,13 @@ class BootstrapRepoTests(unittest.TestCase):
         self.assertIn('AGENT_HINT_OPENCODE="brew install opencode"', agents)
         self.assertNotIn("brew install --cask opencode", agents)
 
+    def test_platform_detection_accepts_only_ubuntu(self):
+        """Ubuntu-specific installation logic must not silently accept Debian."""
+        installer = (REPO_ROOT.parent / "install.sh").read_text(encoding="utf-8")
+        self.assertIn('case "${ID:-}" in', installer)
+        self.assertIn("ubuntu) ;;", installer)
+        self.assertNotIn("*debian*", installer)
+
 
 if __name__ == "__main__":
     unittest.main()
