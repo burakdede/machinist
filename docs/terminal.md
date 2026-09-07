@@ -33,7 +33,7 @@ compositor misbehaves, export `WEZTERM_DISABLE_WAYLAND=1` in `~/.zshrc.local`.
 
 ## One theme, four tools
 
-The colour scheme is Catppuccin Mocha, and it is set in four places that must
+The colour scheme is Dracula, and it is set in four places that must
 agree or the shell stops looking like a single environment:
 
 | Tool | Where |
@@ -44,7 +44,7 @@ agree or the shell stops looking like a single environment:
 | delta | `dotfiles/.gitconfig` (`delta.syntax-theme`) |
 
 delta renders through bat, so it takes a bat theme name rather than one of its
-own. Catppuccin Mocha ships built into bat, so none of this needs a theme file
+own. Dracula ships built into bat, so none of this needs a theme file
 or a `bat cache --build`. `./install.sh --verify` fails the "one theme" check
 when the four drift apart, which is what happens when you change one and forget
 the rest.

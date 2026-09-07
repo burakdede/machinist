@@ -46,7 +46,7 @@
 	hyperlinks   = false
 	# delta renders through bat, so this is the same theme name bat uses and
 	# matches WezTerm and Neovim. Keep the four in step.
-	syntax-theme = Catppuccin Mocha
+	syntax-theme = Dracula
 [interactive]
 	# Same guard as core.pager above.
 	diffFilter = command -v delta >/dev/null 2>&1 && delta --color-only || cat

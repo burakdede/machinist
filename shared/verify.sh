@@ -485,10 +485,10 @@ verify_shared() {
 
     # One theme name across the terminal, editor, pager and previewer.
     local theme_ok=1
-    grep -q 'Catppuccin Mocha' "$REPO_ROOT/dotfiles/.config/wezterm/wezterm.lua" 2>/dev/null || theme_ok=0
-    grep -q 'catppuccin-mocha'  "$REPO_ROOT/dotfiles/.config/nvim/lua/plugins/ui.lua" 2>/dev/null || theme_ok=0
-    grep -q 'Catppuccin Mocha'  "$HOME/.config/bat/config" 2>/dev/null || theme_ok=0
-    [[ "$(git config --get delta.syntax-theme 2>/dev/null)" == "Catppuccin Mocha" ]] || theme_ok=0
+    grep -q 'color_scheme = "Dracula"' "$REPO_ROOT/dotfiles/.config/wezterm/wezterm.lua" 2>/dev/null || theme_ok=0
+    grep -q 'colorscheme("dracula")'  "$REPO_ROOT/dotfiles/.config/nvim/lua/plugins/ui.lua" 2>/dev/null || theme_ok=0
+    grep -q 'theme="Dracula"'  "$HOME/.config/bat/config" 2>/dev/null || theme_ok=0
+    [[ "$(git config --get delta.syntax-theme 2>/dev/null)" == "Dracula" ]] || theme_ok=0
     if (( theme_ok )); then
         ok "one theme across wezterm, nvim, bat and delta"
     else

@@ -1,10 +1,10 @@
 # bat configuration.
 #
-# Catppuccin Mocha ships built into bat, so this needs no theme install and no
+# Dracula ships built into bat, so this needs no theme install and no
 # `bat cache --build`. It matches the WezTerm colour_scheme and the Neovim
 # colorscheme -- change all three together or the shell stops looking like one
 # environment.
---theme="Catppuccin Mocha"
+--theme="Dracula"
 
 # Show line numbers and git modifications, but no heavy box drawing: bat is
 # used here for previews and man pages, where a frame is noise.

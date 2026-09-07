@@ -227,60 +227,45 @@ config.mouse_bindings = {
 }
 
 -- ─── Colour scheme ───────────────────────────────────────────────────────────
-config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "Dracula"
 
 -- ─── Transparency & blur ─────────────────────────────────────────────────────
 -- window_background_opacity: 1.0 = opaque, 0.0 = fully transparent.
 -- macos_window_background_blur blurs the content behind the window (macOS only).
 -- On Linux/X11 (no compositor blur API) transparency shows the desktop beneath.
--- Adjust opacity to taste; values around 0.85–0.92 keep text readable.
-config.window_background_opacity = 0.8
+-- Keep the terminal opaque so syntax colors retain their contrast against the
+-- Dracula background, especially when a bright desktop image is behind it.
+config.window_background_opacity = 1.0
 config.macos_window_background_blur = 50 -- macOS only; no-op on Linux
 
 -- ─── Window Decoration ───────────────────────────────────────────────────────────
 config.window_decorations = "RESIZE"
 
--- ─── Tab bar colours (Catppuccin Mocha palette) ───────────────────────────────
--- Reference: https://github.com/catppuccin/catppuccin#-palette
-local mocha = {
-	base = "#1e1e2e",
-	mantle = "#181825",
-	crust = "#11111b",
-	surface0 = "#313244",
-	surface1 = "#45475a",
-	overlay1 = "#7f849c",
-	text = "#cdd6f4",
-	lavender = "#b4befe",
-	blue = "#89b4fa",
-	mauve = "#cba6f7",
-	peach = "#fab387",
-	green = "#a6e3a1",
-	yellow = "#f9e2af",
-}
+-- ─── Tab bar colours (Dracula palette) ───────────────────────────────────────
 
 config.colors = {
 	tab_bar = {
-		background = mocha.crust,
+		background = "#191a21",
 		active_tab = {
-			bg_color = mocha.base,
-			fg_color = mocha.lavender,
+			bg_color = "#bd93f9",
+			fg_color = "#282a36",
 			intensity = "Bold",
 		},
 		inactive_tab = {
-			bg_color = mocha.mantle,
-			fg_color = mocha.overlay1,
+			bg_color = "#282a36",
+			fg_color = "#f8f8f2",
 		},
 		inactive_tab_hover = {
-			bg_color = mocha.surface0,
-			fg_color = mocha.text,
+			bg_color = "#6272a4",
+			fg_color = "#f8f8f2",
 		},
 		new_tab = {
-			bg_color = mocha.crust,
-			fg_color = mocha.overlay1,
+			bg_color = "#191a21",
+			fg_color = "#6272a4",
 		},
 		new_tab_hover = {
-			bg_color = mocha.surface0,
-			fg_color = mocha.text,
+			bg_color = "#6272a4",
+			fg_color = "#f8f8f2",
 		},
 	},
 }

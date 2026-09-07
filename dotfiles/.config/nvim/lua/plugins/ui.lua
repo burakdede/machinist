@@ -2,7 +2,7 @@
 -- lua/plugins/ui.lua
 --
 -- Colour scheme and status line. Both are deliberately the only things here:
--- the terminal (WezTerm) already supplies Catppuccin Mocha, so Neovim matching
+-- the terminal (WezTerm) already supplies Dracula, so Neovim matching
 -- it is what makes the editor and the shell look like one environment.
 
 return {
@@ -11,12 +11,12 @@ return {
 	-- dotfiles/.config/wezterm/wezterm.lua. Change both together or the editor
 	-- will not match its own terminal.
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
+		"Mofiqul/dracula.nvim",
+		name = "dracula",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("catppuccin-mocha")
+			vim.cmd.colorscheme("dracula")
 		end,
 	},
 
