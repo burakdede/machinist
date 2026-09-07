@@ -730,6 +730,56 @@ class BootstrapRepoTests(unittest.TestCase):
             )
             self.assertIn("MACHINIST_SKIP_WEZTERM", log_output)
 
+    def test_wezterm_download_url_matches_host_architecture(self):
+        """WezTerm resolution must never select a package for another architecture."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            metadata = tmp_path / "release.json"
+            metadata.write_text(
+                json.dumps(
+                    {
+                        "assets": [
+                            {
+                                "name": "WezTerm-Ubuntu20.04.deb",
+                                "browser_download_url": "https://example.test/x86.deb",
+                            },
+                            {
+                                "name": "WezTerm-Ubuntu22.04.arm64.deb",
+                                "browser_download_url": "https://example.test/arm64.deb",
+                            },
+                            {
+                                "name": "WezTerm-Ubuntu22.04.deb",
+                                "browser_download_url": "https://example.test/amd64.deb",
+                            },
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            sourceable = self.create_sourceable_terminal_script(tmp_path)
+
+            command = textwrap.dedent(
+                f'''\
+                source "{REPO_ROOT / "utils" / "utils.sh"}"
+                dpkg() {{ printf '%s\\n' "$MACHINIST_TEST_ARCH"; }}
+                curl() {{ :; }}
+                source "{sourceable}"
+                export MACHINIST_TEST_ARCH=arm64
+                resolve_wezterm_download_url ignored "{metadata}"
+                export MACHINIST_TEST_ARCH=amd64
+                resolve_wezterm_download_url ignored "{metadata}"
+                '''
+            )
+            result = self.run_cmd(["bash", "-lc", command])
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(
+                result.stdout.splitlines(),
+                [
+                    "https://example.test/arm64.deb",
+                    "https://example.test/amd64.deb",
+                ],
+            )
+
     def test_nvim_config_entrypoint_exists(self):
         init_lua = DOTFILES_DIR / ".config" / "nvim" / "init.lua"
         if not init_lua.exists():

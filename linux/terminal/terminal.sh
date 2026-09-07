@@ -58,26 +58,57 @@ resolve_wezterm_download_url() {
         return 0
     fi
 
-    local url
-    # Prefer Ubuntu 24.04 first, then Ubuntu 22.04, then any amd64 .deb, then any .deb.
-    url="$(jq -r \
-        '.assets[] | select(.name | test("Ubuntu24\\.04\\.deb$")) | .browser_download_url' \
-        "$metadata_file" | head -n1)"
-    if [[ -z "$url" || "$url" == "null" ]]; then
-        url="$(jq -r \
-            '.assets[] | select(.name | test("Ubuntu22\\.04\\.deb$")) | .browser_download_url' \
-            "$metadata_file" | head -n1)"
-    fi
-    if [[ -z "$url" || "$url" == "null" ]]; then
-        url="$(jq -r \
-            '.assets[] | select(.name | test("amd64.*\\.deb$|x86_64.*\\.deb$")) | .browser_download_url' \
-            "$metadata_file" | head -n1)"
-    fi
-    if [[ -z "$url" || "$url" == "null" ]]; then
-        url="$(jq -r '.assets[] | select(.name | test("\\.deb$")) | .browser_download_url' "$metadata_file" | head -n1)"
+    local deb_arch
+    deb_arch="$(dpkg --print-architecture 2>/dev/null || true)"
+    if [[ -z "$deb_arch" ]]; then
+        case "$(uname -m)" in
+            x86_64) deb_arch="amd64" ;;
+            aarch64|arm64) deb_arch="arm64" ;;
+            *) deb_arch="" ;;
+        esac
     fi
 
-    if [[ "$url" == "null" ]]; then
+    local url
+    case "$deb_arch" in
+        amd64)
+            # Ubuntu 24.04/22.04 packages use the unqualified amd64 filename.
+            url="$(jq -r \
+                '.assets[] | select(.name | test("Ubuntu24\\.04\\.deb$")) | .browser_download_url' \
+                "$metadata_file" | head -n1)"
+            if [[ -z "$url" || "$url" == "null" ]]; then
+                url="$(jq -r \
+                    '.assets[] | select(.name | test("Ubuntu22\\.04\\.deb$")) | .browser_download_url' \
+                    "$metadata_file" | head -n1)"
+            fi
+            if [[ -z "$url" || "$url" == "null" ]]; then
+                url="$(jq -r \
+                    '.assets[] | select(.name | test("(amd64|x86_64).*\\.deb$")) | .browser_download_url' \
+                    "$metadata_file" | head -n1)"
+            fi
+            ;;
+        arm64)
+            # ARM64 packages are explicitly qualified in the asset filename.
+            url="$(jq -r \
+                '.assets[] | select(.name | test("Ubuntu24\\.04\\.arm64\\.deb$")) | .browser_download_url' \
+                "$metadata_file" | head -n1)"
+            if [[ -z "$url" || "$url" == "null" ]]; then
+                url="$(jq -r \
+                    '.assets[] | select(.name | test("Ubuntu22\\.04\\.arm64\\.deb$")) | .browser_download_url' \
+                    "$metadata_file" | head -n1)"
+            fi
+            if [[ -z "$url" || "$url" == "null" ]]; then
+                url="$(jq -r \
+                    '.assets[] | select(.name | test("arm64.*\\.deb$|aarch64.*\\.deb$")) | .browser_download_url' \
+                    "$metadata_file" | head -n1)"
+            fi
+            ;;
+        *)
+            log_warn "Unsupported architecture for WezTerm package: ${deb_arch:-unknown}"
+            url=""
+            ;;
+    esac
+
+    if [[ -z "$url" || "$url" == "null" ]]; then
         echo ""
     else
         echo "$url"
