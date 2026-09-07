@@ -878,6 +878,16 @@ class BootstrapRepoTests(unittest.TestCase):
                     f"{'cask' if kind == 'cask' else 'formula'} by that name",
                 )
 
+    def test_mac_opencode_hint_matches_brewfile(self):
+        """The macOS OpenCode recovery command must use its formula kind."""
+        brewfile = (REPO_ROOT.parent / "mac" / "Brewfile").read_text(encoding="utf-8")
+        agents = (REPO_ROOT.parent / "mac" / "agents" / "agents.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertRegex(brewfile, re.compile(r'^brew "opencode"', re.MULTILINE))
+        self.assertIn('AGENT_HINT_OPENCODE="brew install opencode"', agents)
+        self.assertNotIn("brew install --cask opencode", agents)
+
 
 if __name__ == "__main__":
     unittest.main()

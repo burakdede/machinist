@@ -86,7 +86,7 @@ Dependencies:
   - Run dotfiles before configure, shell, editor, multiplexer, terminal.
   - Run shell before terminal (terminal picks up the new default shell).
   - Run sdk before editor if you use Java LSP in Neovim (jdtls needs a JDK).
-  - Run system before agents (agents needs brew for codex/opencode casks).
+  - Run system before agents (agents needs Homebrew-installed agent CLIs).
 
 Environment variable overrides (identical on macOS and Ubuntu):
   MACHINIST_UPGRADE=1            Re-install tools even if already present.

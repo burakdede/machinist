@@ -22,7 +22,7 @@ fi
 
 export AGENT_HINT_CLAUDE="brew install --cask claude-code"
 export AGENT_HINT_CODEX="brew install --cask codex"
-export AGENT_HINT_OPENCODE="brew install --cask opencode"
+export AGENT_HINT_OPENCODE="brew install opencode"
 
 # shellcheck source=../../shared/agents.sh
 source "$REPO_ROOT/shared/agents.sh"
