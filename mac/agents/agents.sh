@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# Coding agent setup for macOS -- Claude Code, Codex, OpenCode.
+# Coding agent setup for macOS -- Claude Code and Codex CLIs.
 #
-# The logic is OS-neutral and lives in shared/agents.sh; this wrapper only
-# supplies the macOS install hints. See that file for what gets wired where.
+# The logic is OS-neutral and lives in shared/agents.sh.
 #
 # Skip: MACHINIST_SKIP_AGENTS=1 ./run.sh --only agents
 
@@ -20,10 +19,7 @@ if should_skip_step AGENTS; then
     exit 0
 fi
 
-export AGENT_HINT_CLAUDE="brew install --cask claude-code"
-export AGENT_HINT_CODEX="brew install --cask codex"
-export AGENT_HINT_OPENCODE="brew install opencode"
-
 # shellcheck source=../../shared/agents.sh
 source "$REPO_ROOT/shared/agents.sh"
+install_native_agents
 configure_agents

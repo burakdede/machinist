@@ -1,7 +1,7 @@
 # Agent instructions
 
-Standing instructions for every coding agent on this machine (Claude Code,
-Codex, OpenCode). Kept deliberately short: it is loaded into every session, so
+Standing instructions for every coding agent on this machine (Claude Code and
+Codex). Kept deliberately short: it is loaded into every session, so
 it covers what you cannot discover by reading the code, and nothing else.
 
 Project-level `AGENTS.md` or `CLAUDE.md` files override anything here.

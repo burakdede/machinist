@@ -61,7 +61,6 @@ brew "uv"      # Python package manager -- replaces pip/venv/pyenv
 brew "direnv"  # per-directory env vars -- agents cd in and env is set automatically
 brew "just"    # task runner -- cleaner than Makefiles, agents call `just <task>`
 brew "shfmt"   # shell formatter -- agents write shell; keeps it well-formatted
-brew "opencode"  # agent CLI -- a formula, not a cask, despite the app-like name
 
 ########################################################################
 # Apple platform toolchain (macOS only)                                #
@@ -103,8 +102,6 @@ brew "hcloud"        # Hetzner Cloud
 # Apps                                                                 #
 ########################################################################
 cask "alfred"
-cask "antigravity"               # Google's agent IDE
-cask "codex"
 cask "docker-desktop"            # includes docker CLI and compose. Local databases
                                  # are containers started from a project's compose
                                  # file -- no standalone database server is installed

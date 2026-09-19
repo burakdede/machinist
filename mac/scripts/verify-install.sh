@@ -44,7 +44,7 @@ if command -v brew >/dev/null 2>&1; then
     # answer --version identically. Compare what PATH resolves against what
     # Homebrew owns rather than trusting the name.
     brew_bin="$(brew --prefix)/bin"
-    for agent_cli in codex claude opencode; do
+    for agent_cli in codex claude; do
         agent_path="$(command -v "$agent_cli" 2>/dev/null)" || continue
         [[ "$agent_path" == "$brew_bin/$agent_cli" ]] && continue
         grep -qE "^(cask|brew) \"$agent_cli\"" "$ROOT_DIR/Brewfile" || continue

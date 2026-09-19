@@ -16,7 +16,7 @@
 #  6. editor      -- neovim + lazy.nvim plugin bootstrap, vi/vim shims
 #  7. multiplexer -- tmux config wiring + TPM (Tmux Plugin Manager)
 #  8. terminal    -- WezTerm via Homebrew Cask
-#  9. agents      -- Claude Code, Codex, OpenCode -- install checks + central config symlinks
+#  9. agents      -- Claude Code and Codex -- install checks + central config symlinks
 # 10. git         -- GitHub SSH key setup (interactive; skippable)
 # 11. macos       -- macOS system defaults via `defaults write` (skippable)
 #
@@ -77,7 +77,7 @@ Valid STEP values (run in this order on a fresh machine):
   editor          Neovim via Homebrew + lazy.nvim bootstrap, vi/vim shims
   multiplexer     Tmux config wiring + TPM (Tmux Plugin Manager)
   terminal        WezTerm via Homebrew Cask
-  agents          Claude Code, Codex, OpenCode -- install checks + central config symlinks
+  agents          Claude Code and Codex -- install checks + central config symlinks
   git             GitHub SSH key setup (interactive)
   macos           macOS system defaults via 'defaults write'
 
@@ -222,7 +222,7 @@ print_outstanding() {
 
     # Agent CLIs need an interactive login that cannot be scripted.
     local agent
-    for agent in claude codex opencode; do
+    for agent in claude codex; do
         command_exists "$agent" || items+=("install $agent")
     done
 
@@ -263,7 +263,7 @@ main() {
         "editor|$ROOT_DIR/editor/editor.sh|Neovim editor"
         "multiplexer|$ROOT_DIR/multiplexer/multiplexer.sh|Tmux multiplexer"
         "terminal|$ROOT_DIR/terminal/terminal.sh|WezTerm terminal emulator"
-        "agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex, OpenCode)"
+		"agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex)"
     )
 
     [[ $INCLUDE_GIT -eq 1 ]]   && steps+=("git|$ROOT_DIR/git/git.sh|GitHub SSH setup")

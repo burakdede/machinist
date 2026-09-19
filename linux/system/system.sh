@@ -13,10 +13,9 @@ trap 'handle_error $? $LINENO' ERR
 load_versions
 
 APT_PACKAGES_FILE="$SCRIPT_DIR/apt-packages.txt"
-# Shared cross-platform JS tooling, plus the Ubuntu-only agent CLIs that
-# macOS gets from Homebrew casks.
+# Shared cross-platform JS tooling. Agent CLIs use their vendor-native
+# installers in the agents step.
 NPM_PACKAGES_FILE="$REPO_ROOT/packages/npm-packages.txt"
-NPM_AGENT_CLIS_FILE="$SCRIPT_DIR/npm-packages.txt"
 UV_TOOLS_FILE="$REPO_ROOT/packages/uv-tools.txt"
 GITHUB_TOOLS_FILE="$SCRIPT_DIR/github-tools.txt"
 
@@ -598,17 +597,6 @@ install_uv_tools() {
     done < <(read_list_file "$UV_TOOLS_FILE")
 }
 
-install_claude_code() {
-    echo_header "Claude Code"
-
-    if command_exists claude; then
-        log_info "Claude Code is already installed."
-        return 0
-    fi
-
-    curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --retry-delay 2 https://claude.ai/install.sh | bash
-}
-
 install_mise() {
     echo_header "mise"
 
@@ -805,21 +793,20 @@ install_npm_clis() {
 
     install_mise_runtimes
 
-    local list package_name
-    for list in "$NPM_PACKAGES_FILE" "$NPM_AGENT_CLIS_FILE"; do
-        if [[ ! -f "$list" ]]; then
-            log_warn "Missing ${list}; skipping those npm CLIs."
-            continue
-        fi
+    local package_name
+	if [[ ! -f "$NPM_PACKAGES_FILE" ]]; then
+		log_warn "Missing ${NPM_PACKAGES_FILE}; skipping npm CLIs."
+		return 0
+	fi
 
-        while IFS= read -r package_name; do
-            # Entries may be `package|command`; npm only wants the package.
-            package_name="${package_name%%|*}"
-            log_info "Installing npm package: $package_name"
-            # No version here: mise resolves node from the shared config.
-            "$MISE_BIN" exec -- npm install --global "$package_name"
-        done < <(read_list_file "$list")
-    done
+	local package_name
+	while IFS= read -r package_name; do
+		# Entries may be `package|command`; npm only wants the package.
+		package_name="${package_name%%|*}"
+		log_info "Installing npm package: $package_name"
+		# No version here: mise resolves node from the shared config.
+		"$MISE_BIN" exec -- npm install --global "$package_name"
+	done < <(read_list_file "$NPM_PACKAGES_FILE")
 }
 
 # Playwright drives a real browser for visual verification; the npm package
@@ -955,10 +942,6 @@ main() {
     if ! should_skip_step UV; then
         install_uv
         install_uv_tools
-    fi
-
-    if ! should_skip_step CLAUDE; then
-        install_claude_code
     fi
 
     if ! should_skip_step NPM_TOOLS; then

@@ -46,7 +46,6 @@ base_commands=(
     mise
     claude
     codex
-    opencode
     pre-commit
     ruff
     yamllint

@@ -521,7 +521,6 @@ verify_shared() {
     section "Agents"
     check_cmd_optional claude   "Claude Code"
     check_cmd_optional codex    "Codex"
-    check_cmd_optional opencode "OpenCode"
     check_file "$HOME/.config/agents/instructions.md" "shared agent instructions"
     check_symlink "$HOME/.claude/CLAUDE.md" "Claude Code -> shared instructions"
     check_symlink "$HOME/.codex/AGENTS.md"  "Codex -> shared instructions"

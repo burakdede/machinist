@@ -140,11 +140,10 @@ jobs:
       - name: Agents bootstrap
         run: ./run.sh --only agents
 
-      - name: Shared instructions reach every agent
+      - name: Shared instructions reach supported agents
         run: |
           test -L ~/.claude/CLAUDE.md
           test -L ~/.codex/AGENTS.md
-          grep -q "$HOME/.config/agents/instructions.md" ~/.config/opencode/config.json
 
 
       # Startup speed is a stated goal, so measure it on the real target OS

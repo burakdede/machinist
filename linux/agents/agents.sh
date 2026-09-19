@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# Coding agent setup for Ubuntu -- Claude Code, Codex, OpenCode.
+# Coding agent setup for Ubuntu -- Claude Code and Codex CLIs.
 #
-# The logic is OS-neutral and lives in shared/agents.sh; this wrapper only
-# supplies the Ubuntu install hints. See that file for what gets wired where.
+# The logic is OS-neutral and lives in shared/agents.sh.
 #
 # Skip: MACHINIST_SKIP_AGENTS=1 ./run.sh --only agents
 
@@ -20,10 +19,7 @@ if should_skip_step AGENTS; then
     exit 0
 fi
 
-export AGENT_HINT_CLAUDE="curl -fsSL https://claude.ai/install.sh | bash"
-export AGENT_HINT_CODEX="npm install -g @openai/codex  (installed by the system step)"
-export AGENT_HINT_OPENCODE="npm install -g opencode-ai  (installed by the system step)"
-
 # shellcheck source=../../shared/agents.sh
 source "$REPO_ROOT/shared/agents.sh"
+install_native_agents
 configure_agents

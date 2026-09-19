@@ -280,7 +280,6 @@ class BootstrapRepoTests(unittest.TestCase):
     def test_manifests_are_well_formed(self):
         simple_manifests = [
             REPO_ROOT / "system" / "apt-packages.txt",
-            REPO_ROOT / "system" / "npm-packages.txt",
             PACKAGES_DIR / "npm-packages.txt",
             PACKAGES_DIR / "uv-tools.txt",
             PACKAGES_DIR / "sdkman.txt",
@@ -512,7 +511,7 @@ class BootstrapRepoTests(unittest.TestCase):
                 vimrc.is_symlink(), ".vimrc should be a symlink after idempotent run"
             )
 
-    def test_agents_script_wires_all_three_agents(self):
+    def test_agents_script_wires_supported_agents(self):
         """agents.sh points every agent at the one shared instructions file."""
         with tempfile.TemporaryDirectory() as tmp_dir:
             home = Path(tmp_dir)
@@ -549,16 +548,6 @@ class BootstrapRepoTests(unittest.TestCase):
                 (home / ".codex" / "config.toml").exists(),
                 "agents.sh must not write codex config.toml",
             )
-
-            opencode_config = home / ".config" / "opencode" / "config.json"
-            self.assertTrue(
-                opencode_config.exists(), "opencode config.json must be created"
-            )
-            payload = json.loads(opencode_config.read_text(encoding="utf-8"))
-            self.assertEqual(payload.get("instructions"), [str(shared)])
-            self.assertFalse(payload.get("autoshare", True), "autoshare must be false")
-            # No model id is pinned anywhere -- they go stale.
-            self.assertNotIn("model", payload)
 
     def test_configure_script_skips_in_non_interactive_env(self):
         """configure.sh must exit 0 and not block when stdin is not a TTY."""
@@ -944,16 +933,6 @@ class BootstrapRepoTests(unittest.TestCase):
                     f'mac/Brewfile declares {kind} "{name}", but Homebrew has no '
                     f"{'cask' if kind == 'cask' else 'formula'} by that name",
                 )
-
-    def test_mac_opencode_hint_matches_brewfile(self):
-        """The macOS OpenCode recovery command must use its formula kind."""
-        brewfile = (REPO_ROOT.parent / "mac" / "Brewfile").read_text(encoding="utf-8")
-        agents = (REPO_ROOT.parent / "mac" / "agents" / "agents.sh").read_text(
-            encoding="utf-8"
-        )
-        self.assertRegex(brewfile, re.compile(r'^brew "opencode"', re.MULTILINE))
-        self.assertIn('AGENT_HINT_OPENCODE="brew install opencode"', agents)
-        self.assertNotIn("brew install --cask opencode", agents)
 
     def test_platform_detection_accepts_only_ubuntu(self):
         """Ubuntu-specific installation logic must not silently accept Debian."""

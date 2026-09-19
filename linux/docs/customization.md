@@ -117,7 +117,6 @@ lives in tells you its scope.
 
 - `system/apt-packages.txt`
 - `system/github-tools.txt` -- upstream release binaries not packaged in APT
-- `system/npm-packages.txt` -- agent CLIs; macOS installs these from Homebrew casks
 
 If you want to tailor the machine, start there first. Adding a cross-platform
 CLI tool to an Ubuntu-only list is the usual way the two machines drift apart.

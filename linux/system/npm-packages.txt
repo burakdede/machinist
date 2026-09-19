@@ -1,7 +1,0 @@
-# Agent CLIs installed from npm -- Ubuntu only.
-#
-# macOS installs these from Homebrew casks (see mac/Brewfile), so they are not
-# in the shared packages/npm-packages.txt list.
-
-@openai/codex
-opencode-ai

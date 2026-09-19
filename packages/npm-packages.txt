@@ -7,8 +7,8 @@
 # verifier looks for a command named after the package and reports a false
 # failure. Same convention as packages/uv-tools.txt.
 #
-# Agent CLIs are NOT listed here: macOS installs them from Homebrew casks and
-# Ubuntu from npm/vendor installers, so they are tracked per platform.
+# Agent CLIs are NOT listed here: both platforms use the vendors' native
+# installers from the agents step.
 
 eslint
 prettier

@@ -61,7 +61,7 @@ just bench      # shell startup, both shells
 | [Neovim](docs/neovim.md) | Plugins, LSP, treesitter, everyday workflows |
 | [JVM toolchain](docs/jvm.md) | SDKMAN, GraalVM, Maven and Gradle |
 | [Git](docs/git.md) | Config decisions, git-lfs and ssh wiring, the global gitignore |
-| [Coding agents](docs/agents.md) | One instructions file shared by Claude Code, Codex and OpenCode |
+| [Coding agents](docs/agents.md) | One instructions file shared by Claude Code and Codex |
 | [Versions and packages](docs/versions.md) | Where each version is pinned, how to add a tool |
 | [Verification and CI](docs/ci.md) | What `--verify` checks, what CI covers, post-install state |
 | [Design decisions](docs/design.md) | What this setup chooses for you, and why |
@@ -124,7 +124,7 @@ list, that is how the two machines drift apart.
 | `editor` | Neovim via Homebrew, `vi`/`vim` shims, lazy.nvim plugin bootstrap |
 | `multiplexer` | Tmux config wiring + TPM (Tmux Plugin Manager) |
 | `terminal` | WezTerm via Homebrew Cask |
-| `agents` | Claude Code, Codex, OpenCode -- install checks + central config symlinks |
+| `agents` | Claude Code and Codex -- install checks + central config symlinks |
 | `git` | GitHub SSH key generation and connection test |
 | `macos` | macOS system defaults via `defaults write` |
 
@@ -144,7 +144,7 @@ Re-install: `MACHINIST_UPGRADE=1 ./run.sh --only editor`
 | `editor` | Neovim from GitHub releases, `vi`/`vim`/`editor` alternatives |
 | `multiplexer` | Tmux config wiring + TPM |
 | `terminal` | WezTerm from GitHub releases, sets as default terminal |
-| `agents` | Claude Code, Codex, OpenCode -- install checks + central config symlinks |
+| `agents` | Claude Code and Codex -- install checks + central config symlinks |
 | `git` | GitHub SSH key generation and connection test |
 | `settings` | GNOME desktop settings (font, scaling, cursor) |
 

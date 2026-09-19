@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 # Coding agent configuration hub -- shared by macOS and Ubuntu.
 #
-# This file contains no OS-specific logic. It is sourced by
-# mac/agents/agents.sh and linux/agents/agents.sh, which set the
-# AGENT_HINT_* variables to the right install command for their platform and
-# then call configure_agents.
+# This file contains no OS-specific logic. It is sourced by the macOS and
+# Ubuntu agent steps, which install the vendor-native CLIs and configure them.
 #
 # ── The idea ──────────────────────────────────────────────────────────────────
-# One instructions file drives every agent:
+# One instructions file drives both supported agents:
 #
 #   dotfiles/.config/agents/instructions.md
 #     -> ~/.claude/CLAUDE.md              (Claude Code, symlink)
 #     -> ~/.codex/AGENTS.md               (Codex, symlink)
-#     -> ~/.config/opencode/config.json   (OpenCode, "instructions" key)
 #
-# Edit that one file and all three agents pick the change up.
+# Edit that one file and both agents pick the change up.
 #
 # ── Why no model is pinned ────────────────────────────────────────────────────
 # These configs deliberately do NOT hardcode a model id. Model names change
@@ -63,13 +60,32 @@ check_agent_installed() {
     return 1
 }
 
+install_native_agents() {
+    echo_header "Coding agent CLIs"
+
+	if ! command_exists claude || upgrade_enabled; then
+		log_info "Installing Claude Code with Anthropic's native installer..."
+		curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --retry-delay 2 \
+			https://claude.ai/install.sh | bash
+	else
+		log_info "Claude Code is already installed."
+	fi
+
+	if ! command_exists codex || upgrade_enabled; then
+		log_info "Installing Codex with OpenAI's standalone installer..."
+		curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --retry-delay 2 \
+			https://chatgpt.com/codex/install.sh | sh
+	else
+		log_info "Codex is already installed."
+	fi
+}
+
 configure_agents() {
-    echo_header "Coding agents (Claude Code · Codex · OpenCode)"
+    echo_header "Coding agents (Claude Code · Codex)"
 
     local agents_ok=1
     check_agent_installed claude   "Claude Code" "${AGENT_HINT_CLAUDE:-see claude.ai/code}"   || agents_ok=0
     check_agent_installed codex    "Codex"       "${AGENT_HINT_CODEX:-see openai.com/codex}"  || agents_ok=0
-    check_agent_installed opencode "OpenCode"    "${AGENT_HINT_OPENCODE:-see opencode.ai}"    || agents_ok=0
 
     # dotfiles.sh symlinks ~/.config/agents from the repo. If that step has not
     # run yet there is nothing to point the agents at.
@@ -90,49 +106,9 @@ configure_agents() {
     # would clobber project trust entries.
     link_agent_instructions "$CENTRAL_INSTRUCTIONS" "$HOME/.codex/AGENTS.md" "Codex"
 
-    # ─── OpenCode ─────────────────────────────────────────────────────────────
-    # Reads ~/.config/opencode/config.json. The "instructions" key takes a list
-    # of files to prepend, which is how the shared file reaches OpenCode.
-    local opencode_config="$HOME/.config/opencode/config.json"
-    mkdir -p "$(dirname "$opencode_config")"
-
-    if [[ -f "$opencode_config" ]]; then
-        if grep -q '"instructions"' "$opencode_config"; then
-            log_info "OpenCode: already reading the shared instructions"
-        elif command -v jq >/dev/null 2>&1; then
-            # Add the one key we care about and leave everything else untouched.
-            # Warning about it was not enough: the file predates this step on
-            # any machine set up before it existed, so it never got wired.
-            local tmp
-            tmp="$(mktemp)"
-            if jq --arg p "$CENTRAL_INSTRUCTIONS" '.instructions = [$p]' \
-                 "$opencode_config" > "$tmp" 2>/dev/null; then
-                cp "$opencode_config" "${opencode_config}.bak"
-                mv "$tmp" "$opencode_config"
-                log_success "OpenCode: added instructions to the existing config (backup: config.json.bak)"
-            else
-                rm -f "$tmp"
-                log_warn "OpenCode: could not parse $opencode_config; add by hand:"
-                log_warn "  \"instructions\": [\"$CENTRAL_INSTRUCTIONS\"]"
-            fi
-        else
-            log_warn "OpenCode: jq not available; add by hand:"
-            log_warn "  \"instructions\": [\"$CENTRAL_INSTRUCTIONS\"]"
-        fi
-    else
-        cat > "$opencode_config" <<EOF
-{
-  "\$schema": "https://opencode.ai/config.json",
-  "autoshare": false,
-  "instructions": ["$CENTRAL_INSTRUCTIONS"]
-}
-EOF
-        log_success "OpenCode: created $opencode_config"
-    fi
-
     echo ""
     log_success "Central agent config: $AGENTS_CONFIG_DIR"
-    log_success "  Edit $CENTRAL_INSTRUCTIONS to update instructions for all three agents."
+    log_success "  Edit $CENTRAL_INSTRUCTIONS to update instructions for both agents."
 
     if [[ "$agents_ok" -eq 0 ]]; then
         log_warn "One or more agents were not found -- install them and re-run: ./run.sh --only agents"

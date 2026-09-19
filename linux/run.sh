@@ -41,7 +41,7 @@ Valid STEP values (run in this order on a fresh machine):
   editor          Install Neovim, register as vim/vi/editor
   multiplexer     Tmux TPM bootstrap and config wiring
   terminal        Install WezTerm, set as default terminal
-  agents          Claude Code, Codex, OpenCode -- install checks + central config symlinks
+  agents          Claude Code and Codex -- install checks + central config symlinks
   git             GitHub SSH key setup (interactive)
   settings        GNOME desktop preferences (requires desktop session)
 
@@ -59,7 +59,7 @@ Dependencies:
   - configure needs dotfiles (for the .gitconfig symlink).
   - terminal picks up zsh as its default shell only after shell has run.
   - editor's Java LSP (jdtls) needs a JDK -- run sdk before opening Java files.
-  - agents needs system packages (npm for claude-code, etc.) -- run system first.
+  - agents needs the system step first for curl and the user-local PATH.
 EOF
 }
 
@@ -221,7 +221,7 @@ print_outstanding() {
 
     # Agent CLIs need an interactive login that cannot be scripted.
     local agent
-    for agent in claude codex opencode; do
+    for agent in claude codex; do
         command_exists "$agent" || items+=("install $agent")
     done
 
@@ -279,7 +279,7 @@ main() {
         # 7. Terminal -- launched last so it picks up zsh as default shell
         "terminal|$ROOT_DIR/terminal/terminal.sh|WezTerm terminal emulator"
         # 8. Agent tooling -- needs npm/node from system
-        "agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex, OpenCode)"
+		"agents|$ROOT_DIR/agents/agents.sh|Coding agents (Claude Code, Codex)"
     )
 
     if [[ $INCLUDE_GIT -eq 1 ]]; then
