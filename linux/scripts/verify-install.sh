@@ -25,6 +25,7 @@ echo_header "machinist verification (Ubuntu)"
 verify_shared
 
 section "Ubuntu-only tools"
+check_file "$HOME/Applications/LM Studio.AppImage" "LM Studio"
 check_cmd_optional wezterm
 check_cmd_optional docker
 check_cmd shellcheck

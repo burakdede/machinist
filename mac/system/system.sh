@@ -34,6 +34,22 @@ MISE_BIN="$HOME/.local/bin/mise"
 
 load_versions
 
+install_llama_cli() {
+	echo_header "Llama CLI"
+
+	if command_exists llama && ! upgrade_enabled; then
+		log_info "llama is already installed. (MACHINIST_UPGRADE=1 to upgrade)"
+		return 0
+	fi
+
+	log_info "Installing the Llama CLI via the official installer..."
+	if curl --proto '=https' --tlsv1.2 -fsSL https://llama.app/install.sh | sh; then
+		log_success "Llama CLI installed."
+	else
+		log_warn "The Llama CLI installer failed; continuing without it."
+	fi
+}
+
 install_homebrew() {
     echo_header "Homebrew"
 
@@ -239,6 +255,7 @@ main() {
     install_uv_tools
     install_npm_clis
     install_playwright_browser
+    install_llama_cli
 
     echo_header "System setup complete"
     log_success "Homebrew packages, mise runtimes and CLI tooling are ready."

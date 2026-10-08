@@ -48,6 +48,90 @@ MISE_BIN="$HOME/.local/bin/mise"
 MISE_VERSION="${MISE_VERSION:-}"
 RUST_VERSION="${RUST_VERSION:-}"
 
+install_llama_cli() {
+	echo_header "Llama CLI"
+
+	if command_exists llama && ! upgrade_enabled; then
+		log_info "llama is already installed. (MACHINIST_UPGRADE=1 to upgrade)"
+		return 0
+	fi
+
+	log_info "Installing the Llama CLI via the official installer..."
+	if curl --proto '=https' --tlsv1.2 -fsSL https://llama.app/install.sh | sh; then
+		log_success "Llama CLI installed."
+	else
+		log_warn "The Llama CLI installer failed; continuing without it."
+	fi
+}
+
+install_ollama_linux() {
+	echo_header "Ollama"
+
+	if command_exists ollama && ! upgrade_enabled; then
+		log_info "ollama is already installed. (MACHINIST_UPGRADE=1 to upgrade)"
+		return 0
+	fi
+
+	log_info "Installing Ollama via the official Linux installer..."
+	if curl --proto '=https' --tlsv1.2 -fsSL https://ollama.com/install.sh | sh; then
+		log_success "Ollama installed."
+	else
+		log_warn "The Ollama installer failed; continuing without it."
+	fi
+}
+
+install_local_ai_tools() {
+    install_ollama_linux
+    install_llama_cli
+    install_lm_studio_linux
+}
+
+install_lm_studio_linux() {
+	echo_header "LM Studio"
+
+	local app_dir="$HOME/Applications"
+	local app_path="$app_dir/LM Studio.AppImage"
+	if [[ -x "$app_path" ]] && ! upgrade_enabled; then
+		log_info "LM Studio is already installed. (MACHINIST_UPGRADE=1 to upgrade)"
+		return 0
+	fi
+
+	local api_arch asset_arch
+	case "$GNU_ARCH" in
+		x86_64) api_arch="x86"; asset_arch="x64" ;;
+		aarch64|arm64) api_arch="arm64"; asset_arch="arm64" ;;
+		*)
+			log_warn "LM Studio has no Linux build for ${GNU_ARCH}. Skipping."
+			return 0
+			;;
+	esac
+
+	local metadata version build download_url temp_dir
+	if ! metadata="$(curl -fsSL "https://versions-prod.lmstudio.ai/update/linux/${api_arch}/0.4")"; then
+		log_warn "Could not fetch LM Studio release metadata. Skipping."
+		return 0
+	fi
+	version="$(jq -r '.version // empty' <<< "$metadata")"
+	build="$(jq -r '.build // empty' <<< "$metadata")"
+	if [[ -z "$version" || -z "$build" ]]; then
+		log_warn "LM Studio release metadata was incomplete. Skipping."
+		return 0
+	fi
+
+	download_url="https://installers.lmstudio.ai/linux/${api_arch}/${version}-${build}/LM-Studio-${version}-${build}-${asset_arch}.AppImage"
+	temp_dir="$(mktemp -d)"
+	if ! curl -fsSL "$download_url" -o "$temp_dir/LM Studio.AppImage"; then
+		log_warn "Could not download LM Studio. Skipping."
+		rm -rf "$temp_dir"
+		return 0
+	fi
+
+	mkdir -p "$app_dir"
+	install -m 0755 "$temp_dir/LM Studio.AppImage" "$app_path"
+	rm -rf "$temp_dir"
+	log_success "LM Studio installed to $app_path"
+}
+
 # python, node, go and the IaC tools are NOT pinned here. They live in the
 # shared dotfiles/.config/mise/config.toml and are installed with `mise install`.
 
@@ -938,6 +1022,8 @@ main() {
     if ! should_skip_step CLOUD_CLIS; then
         install_cloud_clis
     fi
+
+    install_local_ai_tools
 
     if ! should_skip_step UV; then
         install_uv

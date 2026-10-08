@@ -230,6 +230,10 @@ verify_shared() {
     check_cmd cloudflared "cloudflared  (Cloudflare Tunnel)"
     check_cmd hcloud      "hcloud  (Hetzner)"
 
+    section "Local AI"
+    check_cmd ollama      "ollama  (Ollama)"
+    check_cmd llama       "llama  (Llama CLI)"
+
     section "SDKMAN (owns the JVM toolchain)"
     local sdk_home="$HOME/.sdkman"
     if [[ -s "$sdk_home/bin/sdkman-init.sh" ]]; then

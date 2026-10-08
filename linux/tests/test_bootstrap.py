@@ -389,6 +389,7 @@ class BootstrapRepoTests(unittest.TestCase):
                 install_jetbrains_toolbox() {{ printf 'jetbrains-toolbox\\n' >> "{log_file}"; }}
                 configure_timeshift_policy() {{ printf 'timeshift\\n' >> "{log_file}"; }}
                 install_github_release_tools() {{ printf 'gh-tools\\n' >> "{log_file}"; }}
+                install_local_ai_tools() {{ printf 'local-ai\\n' >> "{log_file}"; }}
                 install_uv() {{ printf 'uv\\n' >> "{log_file}"; }}
                 install_uv_tools() {{ printf 'uv-tools\\n' >> "{log_file}"; }}
                 install_claude_code() {{ printf 'claude\\n' >> "{log_file}"; }}
@@ -419,6 +420,7 @@ class BootstrapRepoTests(unittest.TestCase):
             self.assertIn("spotify", output)
             self.assertIn("tailscale", output)
             self.assertIn("jetbrains-toolbox", output)
+            self.assertIn("local-ai", output)
             self.assertIn("timeshift", output)
             self.assertNotIn("cloud-clis", output)
             self.assertNotIn("chrome", output)

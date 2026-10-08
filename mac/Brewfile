@@ -111,7 +111,10 @@ cask "gcloud-cli"                # renamed from google-cloud-sdk; auto-updates i
 cask "google-chrome"
 cask "jetbrains-toolbox"
 cask "font-jetbrains-mono-nerd-font"  # required by WezTerm + neovim UI icons
+cask "llama-app"                      # local LLM menu bar app (macOS only)
+cask "lm-studio"                       # local LLM desktop app
 cask "maccy"                     # clipboard manager
+cask "ollama-app"                # local LLM runtime
 cask "rectangle"                 # window management
 cask "slack"
 cask "spotify"
