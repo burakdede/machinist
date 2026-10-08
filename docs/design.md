@@ -9,13 +9,13 @@ inheriting.
 
 | Concern | Choice | Why |
 |---|---|---|
-| Shell | zsh + antidote + powerlevel10k | Fast, no framework; plugins are a plain text list |
+| Shell | zsh + antidote + powerlevel10k | Fast, no framework; plugins are a plain text list; see [Shell](shell.md) |
 | Runtimes | mise, one shared config | Python, Node, Go, and the IaC tooling in one pinned file |
-| JVM | SDKMAN | mise cannot install GraalVM or the Spring Boot CLI; see below |
+| JVM | SDKMAN | mise cannot install GraalVM or the Spring Boot CLI; see [JVM toolchain](jvm.md) |
 | Python CLIs | uv | Isolated tool installs, no global pip |
-| Terminal | WezTerm | Same config and same keys on both platforms |
-| Multiplexer | tmux, OSC 52 clipboard | Copy behaves identically on macOS and Ubuntu, and over SSH |
-| Editor | Neovim + lazy.nvim, treesitter `main` branch | |
+| Terminal | WezTerm | Same config and same keys on both platforms; see [Terminal](terminal.md) |
+| Multiplexer | tmux, OSC 52 clipboard | Copy behaves identically on macOS and Ubuntu, and over SSH; see [`tmux.conf`](../dotfiles/.config/tmux/tmux.conf) |
+| Editor | Neovim + lazy.nvim, Treesitter `main` branch | One Lua config, lazy loading, and exact plugin commits shared across platforms; see [Neovim](neovim.md) |
 | Prompt | powerlevel10k with instant prompt | |
 
 **One runtime manager, not several.** mise owns Python, Node and Go; SDKMAN

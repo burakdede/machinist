@@ -10,20 +10,15 @@ This repository treats the following categories as the essential base layer for 
 - cloud infrastructure CLI: `hcloud`
 - quality gates: `shellcheck`, `pre-commit`, `ruff`, `yamllint`, `eslint`, `prettier`
 - infrastructure as code: pinned `terraform`, `tflint`, `terragrunt`, `terraform-docs`
-- coding agents: `codex`, `claude`, `gemini`
+- coding agents: `codex`, `claude`
 - runtime management: pinned `mise`, Node, Go, Python, and Rust toolchains
 - shell UX: fast zsh profiles via `antidote+p10k` or `zsh4humans`
 
-## MCP Configuration
+## Agent configuration
 
-The `agents` step writes MCP configuration for local agent clients.
-
-Generated files:
-
-- `~/.claude.json`
-- `~/.openai/mcp.json`
-
-Token-gated integrations such as Linear, Notion, and Miro are written into config but may still require you to fill in your own credentials after bootstrap.
+The agents step uses [`shared/agents.sh`](../../shared/agents.sh) to install the
+native CLIs and link the shared instructions file. It does not overwrite agent
+auth or project configuration.
 
 ## Local Gates
 
@@ -73,6 +68,5 @@ The CI workflow also runs a real Ubuntu system smoke pass to catch upstream pack
 
 ## Control Mapping
 
-For exact ownership and config locations for WezTerm, tmux, zsh, and Neovim, see:
-
-- [docs/control-map.md](../docs/control-map.md)
+For exact ownership and config locations for WezTerm, tmux, zsh, and Neovim, see
+[`control-map.md`](control-map.md).

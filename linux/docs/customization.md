@@ -14,22 +14,25 @@ Example:
 MACHINIST_SKIP_DOCKER=1 MACHINIST_SKIP_CHROME=1 ./run.sh
 ```
 
-Available skip flags:
+Common skip flags:
 
 | Variable | Skips |
 |---|---|
 | `MACHINIST_SKIP_DOCKER` | Docker CLI and Compose plugin |
 | `MACHINIST_SKIP_CLOUD_CLIS` | The AWS and Google Cloud CLIs |
 | `MACHINIST_SKIP_CHROME` | Google Chrome |
+| `MACHINIST_SKIP_SPOTIFY` | Spotify |
+| `MACHINIST_SKIP_TAILSCALE` | Tailscale |
+| `MACHINIST_SKIP_JETBRAINS_TOOLBOX` | JetBrains Toolbox |
+| `MACHINIST_SKIP_TIMESHIFT` | Timeshift |
 | `MACHINIST_SKIP_GITHUB_RELEASE_TOOLS` | GitHub-release binaries such as `yq`, `eza`, `sd`, `scc` |
 | `MACHINIST_SKIP_UV` | `uv` and `uv`-managed tools |
-| `MACHINIST_SKIP_CLAUDE` | Claude Code |
-| `MACHINIST_SKIP_NPM_TOOLS` | npm CLIs and MCP packages |
-| `MACHINIST_SKIP_GO` | Go toolchain via `mise` |
-| `MACHINIST_SKIP_PYTHON` | Python toolchain via `mise` |
+| `MACHINIST_SKIP_AGENTS` | Claude Code and Codex |
+| `MACHINIST_SKIP_NPM_TOOLS` | npm CLIs and Playwright |
+| `MACHINIST_SKIP_MISE_TOOLS` | All runtimes and IaC tools from the shared mise config |
 | `MACHINIST_SKIP_RUST` | Rust toolchain via `rustup` |
-| `MACHINIST_SKIP_IAC_TOOLS` | IaC tooling via `mise` (`terraform`, `tflint`, `terragrunt`, `terraform-docs`) |
 | `MACHINIST_SKIP_UFW` | firewall setup |
+| `MACHINIST_SKIP_SDK` | SDKMAN and its candidates |
 | `MACHINIST_SKIP_WEZTERM` | terminal installation in verification and smoke flows |
 | `MACHINIST_SKIP_NEOVIM` | editor installation in verification and smoke flows |
 | `MACHINIST_SKIP_FONTS` | Nerd Fonts installation |
@@ -115,8 +118,8 @@ lives in tells you its scope.
 
 **Ubuntu-specific** (this directory, no macOS equivalent):
 
-- `system/apt-packages.txt`
-- `system/github-tools.txt` -- upstream release binaries not packaged in APT
+- [`system/apt-packages.txt`](../system/apt-packages.txt)
+- [`system/github-tools.txt`](../system/github-tools.txt) -- upstream release binaries not packaged in APT
 
 If you want to tailor the machine, start there first. Adding a cross-platform
 CLI tool to an Ubuntu-only list is the usual way the two machines drift apart.

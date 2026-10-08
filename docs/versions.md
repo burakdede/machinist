@@ -8,8 +8,8 @@ Every version is pinned in exactly one place, shared by both platforms.
 
 | Pinned in | Covers |
 |---|---|
-| `dotfiles/.config/mise/config.toml` | Everything mise manages: Python, Node, Go, Terraform, tflint, Terragrunt, terraform-docs |
-| `packages/versions.txt` | Everything mise does not: Neovim, mise itself, Rust toolchain, Nerd Fonts |
+| [`dotfiles/.config/mise/config.toml`](../dotfiles/.config/mise/config.toml) | Everything mise manages: Python, Node, Go, Terraform, tflint, Terragrunt, terraform-docs |
+| [`packages/versions.txt`](../packages/versions.txt) | Everything mise does not: Neovim, mise itself, Rust toolchain, Nerd Fonts |
 
 There are no per-platform `versions.txt` files. Both machines resolve the same
 pins, so `node --version` gives the same answer on each.
@@ -51,26 +51,26 @@ mise trust <clone>/dotfiles/.config/mise/config.toml
 
 ## Adding a new tool
 
-**Homebrew (macOS):** add to `mac/Brewfile`, then `brew bundle`.
+**Homebrew (macOS):** add to [`mac/Brewfile`](../mac/Brewfile), then `brew bundle`.
 
-**APT (Linux):** add to `linux/system/apt-packages.txt`, then `sudo apt-get install <pkg>`.
+**APT (Linux):** add to [`linux/system/apt-packages.txt`](../linux/system/apt-packages.txt), then `sudo apt-get install <pkg>`.
 
-**GitHub release binary (Linux):** add a line to `linux/system/github-tools.txt` in the format `command|owner/repo|asset_regex|mode|binary`. The modes are `raw`, `tar.gz`, `tar.xz` and `gz` — a project that ships only a `.zip` needs a new mode in the installer, so prefer another route if one exists.
+**GitHub release binary (Linux):** add a line to [`linux/system/github-tools.txt`](../linux/system/github-tools.txt) in the format `command|owner/repo|asset_regex|mode|binary`. Supported modes are `raw`, `tar.gz`, `tar.xz`, and `gz`.
 
-**Vendor installer (Linux):** add a function to `linux/system/system.sh` and a `should_skip_step` block in `main`. This is the last resort, for a tool with no GitHub release and no usable APT package — `awscli` and `gcloud` are both installed this way, as `mise` and `rustup` already were. Install under `~/.local/share` with a symlink in `~/.local/bin`, which is on PATH for every shell, so the step needs no root.
+**Vendor installer (Linux):** add a function to [`linux/system/system.sh`](../linux/system/system.sh) and a skip block in `main`. Use this only when no GitHub release or APT package exists.
 
-**npm (both):** add to `packages/npm-packages.txt` in the format `package[|command]`. Give the command when the executable does not share the package name, as with a scoped package — `@ast-grep/cli` installs `ast-grep`. Without it the verifier looks for a command named after the package and reports a failure that is not real.
+**npm (both):** add to [`packages/npm-packages.txt`](../packages/npm-packages.txt) in the format `package[|command]`. Give the command when the executable does not share the package name, as with `@ast-grep/cli` installing `ast-grep`.
 
 **Both platforms:** prefer a shared manifest so the two machines cannot drift.
 
 | Kind of tool | Add it to |
 |---|---|
-| Language runtime or IaC tool | `dotfiles/.config/mise/config.toml` |
-| Python CLI | `packages/uv-tools.txt` |
-| Node CLI | `packages/npm-packages.txt` |
+| Language runtime or IaC tool | [`mise/config.toml`](../dotfiles/.config/mise/config.toml) |
+| Python CLI | [`uv-tools.txt`](../packages/uv-tools.txt) |
+| Node CLI | [`npm-packages.txt`](../packages/npm-packages.txt) |
 | Browser for visual checks | `playwright`, in the same npm manifest |
-| JVM SDK | `packages/sdkman.txt` |
-| Version pin for something mise does not manage | `packages/versions.txt` |
+| JVM SDK | [`sdkman.txt`](../packages/sdkman.txt) |
+| Version pin for something mise does not manage | [`versions.txt`](../packages/versions.txt) |
 
 Only reach for `mac/Brewfile` or `linux/system/apt-packages.txt` when the tool
 genuinely has no cross-platform installer, and then add it to **both**. Adding a

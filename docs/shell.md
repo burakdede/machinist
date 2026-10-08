@@ -4,15 +4,16 @@
 
 ## Shared dotfiles
 
-Everything in `dotfiles/` is cross-platform. OS-specific paths are handled inside each config file at runtime:
+Everything in [`dotfiles/`](../dotfiles/) is cross-platform. OS-specific paths
+are handled inside each config file at runtime:
 
-- **`.zshenv`** -- XDG dirs, `$EDITOR`, and user PATH entries; sourced by every zsh process
-- **`.zprofile`** -- Homebrew init on macOS, mise shims; sourced by login shells only
-- **`.zshrc`** -- fzf key-bindings source differs by OS (detected at runtime)
-- **`.bashrc` / `.bash_profile`** -- the same environment for bash; see below
-- **`wezterm.lua`** -- uses `wezterm.target_triple:find("darwin")` to switch modifier keys
-- **`tmux.conf`** -- fully cross-platform
-- **`nvim/`** -- fully cross-platform
+- [`.zshenv`](../dotfiles/.zshenv) — XDG dirs, `$EDITOR`, and PATH
+- [`.zprofile`](../dotfiles/.zprofile) — Homebrew and login-shell setup
+- [`.zshrc`](../dotfiles/.zshrc) — interactive zsh behavior
+- [`.bashrc`](../dotfiles/.bashrc) and [`.bash_profile`](../dotfiles/.bash_profile) — bash environment
+- [`wezterm.lua`](../dotfiles/.config/wezterm/wezterm.lua) — terminal behavior
+- [`tmux.conf`](../dotfiles/.config/tmux/tmux.conf) — multiplexer behavior
+- [`nvim/`](../dotfiles/.config/nvim/) — editor configuration
 
 ### Shell environment: what this setup decides for you
 
@@ -94,7 +95,7 @@ activated there, so `node` resolved to Homebrew's v26 in bash while zsh
 correctly used the pinned 24.18.1. A script would behave differently depending
 on which shell ran it.
 
-`dotfiles/.bashrc` now mirrors `.zshrc` on the things that matter: PATH (with a
+[`dotfiles/.bashrc`](../dotfiles/.bashrc) mirrors `.zshrc` on the things that matter: PATH (with a
 hand-rolled de-duplicator, since bash has no `typeset -U`), mise activation,
 the SDKMAN environment, aliases, fzf, bat, and clipboard parity.
 `.bash_profile` just sources it, so there is one file rather than two that

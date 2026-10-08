@@ -10,8 +10,9 @@ Kotlin, Scala and sbt perfectly well, but it **cannot** install GraalVM, the
 Spring Boot CLI, or VisualVM. Since those are needed, SDKMAN stays, and mise is
 kept out of the JVM entirely so the two never shadow each other on PATH.
 
-Candidates live in `packages/sdkman.txt`, shared by both machines. The format
-is `candidate[@version]`; omit the version to track SDKMAN's current default.
+Candidates live in [`packages/sdkman.txt`](../packages/sdkman.txt), shared by
+both machines. The format is `candidate[@version]`; omit the version to track
+SDKMAN's current default.
 
 ### GraalVM is a java distribution, not a candidate
 
@@ -27,7 +28,7 @@ becomes the default and is what `JAVA_HOME` points at; the rest sit next to it.
 
 ### What the setup wires up beyond installing
 
-SDKMAN only puts binaries on PATH. These are set by `dotfiles/.zshrc`:
+SDKMAN only puts binaries on PATH. These are set by [`dotfiles/.zshrc`](../dotfiles/.zshrc):
 
 | Variable | Points at | Why |
 |---|---|---|
@@ -42,8 +43,10 @@ resolve somewhere other than SDKMAN.
 ### Do not install Maven or Gradle from Homebrew or APT
 
 Whichever copy comes first on PATH wins, and it will not be SDKMAN's. This
-setup previously had Homebrew Maven and Gradle shadowing the declared SDKMAN
-ones; they are removed and the `sdk` step now warns if they come back.
+setup keeps Maven and Gradle under SDKMAN. The platform setup lives in
+[`mac/sdk/sdk.sh`](../mac/sdk/sdk.sh) and
+[`linux/sdk/sdk.sh`](../linux/sdk/sdk.sh). It warns if Maven or Gradle resolve
+outside SDKMAN.
 
 ### Switching versions
 

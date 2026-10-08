@@ -1,6 +1,7 @@
 # Control Map
 
-This document explains who controls what in the terminal stack and where each configuration lives:
+This document explains who controls what in the terminal stack and where each
+configuration lives. The platform entrypoint is [`linux/run.sh`](../run.sh).
 
 - in the repository (source of truth)
 - after installation in your home directory
@@ -9,12 +10,12 @@ This document explains who controls what in the terminal stack and where each co
 
 `run.sh` orchestrates steps, but each step owns a specific area:
 
-- `system/` owns package/runtime installation
-- `dotfiles/` owns user configuration files
-- `shell/` owns zsh installation, default shell, and zsh profile backend bootstrap
-- `multiplexer/` owns tmux bootstrap (TPM install)
-- `terminal/` owns WezTerm package install/default terminal setup
-- `editor/` owns Neovim binary install/alternatives
+- [`system/`](../system/) owns package/runtime installation
+- [`dotfiles.sh`](../dotfiles.sh) owns user configuration links
+- [`shell/`](../shell/) owns zsh installation and profile bootstrap
+- [`multiplexer/`](../multiplexer/) owns tmux bootstrap (TPM install)
+- [`terminal/`](../terminal/) owns WezTerm installation/default-terminal setup
+- [`editor/`](../editor/) owns Neovim installation/alternatives
 
 ## Terminal Stack Control
 
@@ -53,18 +54,12 @@ Runtime override:
 
 ## What To Edit For Common Changes
 
-- Prompt look and segments:
-  - edit `dotfiles/.p10k.zsh`
-- Antidote plugins:
-  - edit `dotfiles/.zsh_plugins.txt`
-- zsh shell behavior, aliases, completion, optional tmux auto-attach:
-  - edit `dotfiles/.zshrc`
-- tmux keybindings/splits/theme/plugins:
-  - edit `dotfiles/.config/tmux/tmux.conf`
-- WezTerm shell/font/window behavior:
-  - edit `dotfiles/.config/wezterm/wezterm.lua`
-- Neovim keymaps/plugins/LSP:
-  - edit files under `dotfiles/.config/nvim/lua/`
+- Prompt look and segments: edit [`dotfiles/.p10k.zsh`](../../dotfiles/.p10k.zsh)
+- Antidote plugins: edit [`dotfiles/.zsh_plugins.txt`](../../dotfiles/.zsh_plugins.txt)
+- zsh behavior, aliases, completion, optional tmux auto-attach: edit [`dotfiles/.zshrc`](../../dotfiles/.zshrc)
+- tmux keybindings, splits, theme, and plugins: edit [`tmux.conf`](../../dotfiles/.config/tmux/tmux.conf)
+- WezTerm shell, font, and window behavior: edit [`wezterm.lua`](../../dotfiles/.config/wezterm/wezterm.lua)
+- Neovim keymaps, plugins, and LSP: edit [`lua/`](../../dotfiles/.config/nvim/lua/)
 
 ## Post-Install Verification Targets
 

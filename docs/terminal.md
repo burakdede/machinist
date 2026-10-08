@@ -4,7 +4,8 @@
 
 ## Terminal
 
-WezTerm on both platforms, with `disable_default_key_bindings = true` so that
+[`dotfiles/.config/wezterm/wezterm.lua`](../dotfiles/.config/wezterm/wezterm.lua)
+configures WezTerm on both platforms, with `disable_default_key_bindings = true` so that
 nothing intercepts the Ctrl combinations readline and zsh rely on (Ctrl+R
 history search, Ctrl+W kill-word, Ctrl+K kill-line). The bindings are then
 declared explicitly, using each platform's native modifier: **Cmd** on macOS,
@@ -26,7 +27,8 @@ Because the defaults are off, a binding that is not in `wezterm.lua` does not
 exist. If something you expect is missing, add it there rather than assuming
 WezTerm provides it.
 
-The tab bar uses WezTerm's native left-aligned layout. The active tab uses a
+The installers are [`mac/terminal/terminal.sh`](../mac/terminal/terminal.sh) and
+[`linux/terminal/terminal.sh`](../linux/terminal/terminal.sh). The tab bar uses WezTerm's native left-aligned layout. The active tab uses a
 bright Dracula purple background with dark text; inactive tabs use the dark
 background with light text, so the active tab remains obvious without a
 periodic status-bar layout calculation.

@@ -4,7 +4,7 @@
 
 ## Git configuration
 
-`dotfiles/.gitconfig` is symlinked to `~/.gitconfig` and includes
+[`dotfiles/.gitconfig`](../dotfiles/.gitconfig) is symlinked to `~/.gitconfig` and includes
 `~/.gitconfig.local` at the end, which is where your name, email and
 credential helper live. That file is machine-local and never committed; the
 `configure` step writes it for you.
@@ -32,6 +32,9 @@ here; `pull` and `diff` behaviour comes from config instead.
 
 ## What the git step wires up
 
+The platform implementation is [`mac/git/git.sh`](../mac/git/git.sh) or
+[`linux/git/git.sh`](../linux/git/git.sh).
+
 Installing `git-lfs`, `gh` and an SSH key is not the same as having them work.
 The step also does the wiring that each one needs before it does anything:
 
@@ -48,7 +51,8 @@ The step also does the wiring that each one needs before it does anything:
   nothing. If more than one `Host *` block exists the step says so rather than
   guessing which one you meant.
 
-**The global gitignore is deliberately small.** `dotfiles/.gitignore_global`
+**The global gitignore is deliberately small.**
+[`dotfiles/.gitignore_global`](../dotfiles/.gitignore_global)
 covers OS metadata, editor scratch files and local tool state only. Build
 output and language artefacts are a property of the project, not the machine,
 and belong in the project's own `.gitignore`.

@@ -9,7 +9,7 @@
 ```
 
 Prints a pass/fail/warn table. The cross-platform checks live in
-`shared/verify.sh` and are **derived from the manifests** rather than
+[`shared/verify.sh`](../shared/verify.sh) and are **derived from the manifests** rather than
 hand-listed, so a tool added to `packages/` is verified automatically and the
 verifier cannot drift from the installer.
 
@@ -19,14 +19,13 @@ Both platforms are covered:
 
 | Workflow | Runner | What it does |
 |---|---|---|
-| `linux-ci.yml` | `ubuntu-24.04` | shellcheck, zsh parse, 30 unit tests, plus a **real** system bootstrap (APT, mise, Docker, runtimes) |
-| `macos-ci.yml` | `macos-15` | shellcheck, zsh parse, Brewfile validity and resolution, plus the dotfiles / configure / agents steps for real |
+| [`linux-ci.yml`](../.github/workflows/linux-ci.yml) | `ubuntu-24.04` | shellcheck, zsh parse, unit tests, and a real system bootstrap |
+| [`macos-ci.yml`](../.github/workflows/macos-ci.yml) | `macos-15` | shellcheck, zsh parse, Brewfile validation, and selected bootstrap steps |
 
 macOS deliberately does not run the full `system` step: installing every cask
-in the Brewfile is far too slow for a hosted runner. Both workflows also run
-weekly, to catch upstream breakage (a removed Homebrew flag, a renamed GitHub
-release asset, a vendor archive that moves) rather than discovering it
-mid-install on a new machine.
+in the Brewfile is far too slow for a hosted runner. The workflows run on
+pushes and pull requests; the disposable VM smoke test is the deeper check for
+an actually bare Ubuntu host.
 
 Because the `system` step is skipped there, `mac/scripts/check-brewfile.sh`
 covers the part of it that fails most often. It asks Homebrew whether every
@@ -36,7 +35,8 @@ install` fails on it, and that aborts the system step partway through a fresh
 machine's bootstrap. The check reads metadata only and installs nothing, so it
 costs seconds rather than the hour a real `brew bundle` would.
 
-Run the Linux suite locally with `cd linux && bash scripts/test.sh`.
+Run the Linux suite locally with [`linux/scripts/test.sh`](../linux/scripts/test.sh):
+`cd linux && bash scripts/test.sh`.
 
 ### What CI does not prove
 
@@ -74,6 +74,6 @@ Everything else is live without restart:
 - Dotfile changes take effect in the next new shell (symlinks are immediate)
 - Neovim plugins are bootstrapped headlessly by the `editor` step
 - Tmux plugins are installed by the `multiplexer` step (TPM runs at next `tmux` start)
-- Agent configs (CLAUDE.md, config.toml, config.json) are written and ready
+- Shared agent instructions are symlinked; auth and project state remain under each CLI's control
 
 **Dotfiles step on a machine with existing configs:** existing files are backed up to `~/.local/state/machinist/dotfiles-backups/<timestamp>/` before being replaced with symlinks.

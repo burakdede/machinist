@@ -2,19 +2,20 @@
 
 ## Intended Flow
 
-The default order is:
+The default order is defined in [`linux/run.sh`](../run.sh):
 
 1. `system`
 2. `dotfiles`
 3. `configure`
 4. `shell`
-5. `editor`
-6. `multiplexer`
-7. `terminal`
-8. `sdk`
+5. `sdk`
+6. `editor`
+7. `multiplexer`
+8. `terminal`
 9. `agents`
 
-That order is already encoded in `./run.sh`, so a plain `./run.sh` is the normal entrypoint on a fresh machine.
+Run [`linux/run.sh`](../run.sh) from `linux/`; a plain `./run.sh` is the normal
+entrypoint on a fresh machine.
 
 ## Base Install
 
@@ -92,6 +93,6 @@ Typical follow-up actions:
 
 - open a new shell so `mise` and shell changes are active everywhere
 - pick your zsh profile (`antidote-p10k` by default, or `zsh4humans`)
-- review generated MCP configs and add your own API tokens if needed
+- review agent links and add credentials through the agents' own setup
 - rerun any optional steps you intentionally skipped the first time
 - adjust manifests or dotfiles only after the base install is stable
