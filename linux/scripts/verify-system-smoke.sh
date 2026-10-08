@@ -44,8 +44,6 @@ base_commands=(
     actionlint
     uv
     mise
-    claude
-    codex
     pre-commit
     ruff
     yamllint
