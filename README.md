@@ -26,8 +26,8 @@ Clone it wherever you like. Nothing depends on the path: every script resolves
 its own location, and the dotfile symlinks point back at whatever clone you ran
 `install.sh` from.
 
-That is the whole thing. `install.sh` detects the operating system and runs the
-right bootstrap, so there is nothing to remember per machine.
+`install.sh` detects the operating system and runs the matching bootstrap. Use
+the same entry point when you need to inspect or resume setup:
 
 ```bash
 ./install.sh                 # full bootstrap
@@ -36,19 +36,25 @@ right bootstrap, so there is nothing to remember per machine.
 ./install.sh --help          # every option for this platform
 ```
 
-It is safe to re-run: every step skips work that is already done. If a step
-fails it says which one, and prints the exact command to resume with. At the
-end it lists only what is genuinely still outstanding.
+It is safe to re-run: completed steps are skipped. If a step fails, the output
+names the failed step and prints the command to resume it.
 
-Day two onwards, `just` is the entry point:
+## After installation
+
+[`justfile`](justfile) is the maintenance interface. `just` is a small task
+runner: it gives the repository stable names for recurring commands and lists
+them when invoked without a task name.
 
 ```bash
-just            # list every task
-just update     # brew/apt, mise, uv, sdkman, nvim plugins, mason, hooks
-just verify     # health check
-just test       # full suite
-just bench      # shell startup, both shells
+just          # list available tasks
+just update   # update packages, runtimes, plugins, and hooks
+just verify   # run the installation health check
+just test     # run the repository test suite
+just bench    # measure zsh and bash startup time
 ```
+
+Use `install.sh` for bootstrap changes or to rerun one setup step. Use `just`
+for maintenance after the machine is configured.
 
 ---
 
