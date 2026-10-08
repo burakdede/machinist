@@ -526,6 +526,13 @@ class BootstrapRepoTests(unittest.TestCase):
 
             env = os.environ.copy()
             env["HOME"] = str(home)
+            fake_bin = home / "bin"
+            fake_bin.mkdir()
+            for command in ("claude", "codex", "pi", "hermes"):
+                fake_command = fake_bin / command
+                fake_command.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+                fake_command.chmod(0o755)
+            env["PATH"] = f"{fake_bin}:{env['PATH']}"
 
             result = self.run_cmd(["bash", "agents/agents.sh"], env=env)
             self.assertEqual(result.returncode, 0, result.stderr)
@@ -543,6 +550,12 @@ class BootstrapRepoTests(unittest.TestCase):
                 codex_md.is_symlink(), "~/.codex/AGENTS.md must be a symlink"
             )
             self.assertEqual(Path(os.readlink(codex_md)), shared)
+
+            pi_md = home / ".pi" / "agent" / "AGENTS.md"
+            self.assertTrue(
+                pi_md.is_symlink(), "~/.pi/agent/AGENTS.md must be a symlink"
+            )
+            self.assertEqual(Path(os.readlink(pi_md)), shared)
 
             # config.toml holds Codex auth and project trust state; the setup
             # must not write it.

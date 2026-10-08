@@ -5,13 +5,14 @@
 # Ubuntu agent steps, which install the vendor-native CLIs and configure them.
 #
 # ── The idea ──────────────────────────────────────────────────────────────────
-# One instructions file drives both supported agents:
+# One instructions file drives the supported coding agents:
 #
 #   dotfiles/.config/agents/instructions.md
 #     -> ~/.claude/CLAUDE.md              (Claude Code, symlink)
 #     -> ~/.codex/AGENTS.md               (Codex, symlink)
+#     -> ~/.pi/agent/AGENTS.md             (Pi, symlink)
 #
-# Edit that one file and both agents pick the change up.
+# Edit that one file and Claude Code, Codex, and Pi pick the change up.
 #
 # ── Why no model is pinned ────────────────────────────────────────────────────
 # These configs deliberately do NOT hardcode a model id. Model names change
@@ -78,14 +79,32 @@ install_native_agents() {
 	else
 		log_info "Codex is already installed."
 	fi
+
+	if ! command_exists pi || upgrade_enabled; then
+		log_info "Installing Pi with the official installer..."
+		curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --retry-delay 2 \
+			https://pi.dev/install.sh | sh
+	else
+		log_info "Pi is already installed."
+	fi
+
+	if ! command_exists hermes || upgrade_enabled; then
+		log_info "Installing Hermes Agent with Nous Research's installer..."
+		curl --proto '=https' --tlsv1.2 -fsSL --retry 3 --retry-delay 2 \
+			https://hermes-agent.nousresearch.com/install.sh | bash
+	else
+		log_info "Hermes Agent is already installed."
+	fi
 }
 
 configure_agents() {
-    echo_header "Coding agents (Claude Code · Codex)"
+    echo_header "Coding agents (Claude Code · Codex · Pi · Hermes Agent)"
 
     local agents_ok=1
     check_agent_installed claude   "Claude Code" "${AGENT_HINT_CLAUDE:-see claude.ai/code}"   || agents_ok=0
     check_agent_installed codex    "Codex"       "${AGENT_HINT_CODEX:-see openai.com/codex}"  || agents_ok=0
+    check_agent_installed pi       "Pi"           "see pi.dev"                                || agents_ok=0
+    check_agent_installed hermes   "Hermes Agent" "see hermes-agent.nousresearch.com"         || agents_ok=0
 
     # dotfiles.sh symlinks ~/.config/agents from the repo. If that step has not
     # run yet there is nothing to point the agents at.
@@ -106,9 +125,12 @@ configure_agents() {
     # would clobber project trust entries.
     link_agent_instructions "$CENTRAL_INSTRUCTIONS" "$HOME/.codex/AGENTS.md" "Codex"
 
+    # Pi reads ~/.pi/agent/AGENTS.md as its global instructions file.
+    link_agent_instructions "$CENTRAL_INSTRUCTIONS" "$HOME/.pi/agent/AGENTS.md" "Pi"
+
     echo ""
     log_success "Central agent config: $AGENTS_CONFIG_DIR"
-    log_success "  Edit $CENTRAL_INSTRUCTIONS to update instructions for both agents."
+    log_success "  Edit $CENTRAL_INSTRUCTIONS to update instructions for Claude Code, Codex, and Pi."
 
     if [[ "$agents_ok" -eq 0 ]]; then
         log_warn "One or more agents were not found -- install them and re-run: ./run.sh --only agents"

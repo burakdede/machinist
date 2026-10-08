@@ -12,8 +12,10 @@ supported CLI agents:
 |---|---|
 | Claude Code | `~/.claude/CLAUDE.md` symlinked to it |
 | Codex | `~/.codex/AGENTS.md` symlinked to it |
+| Pi | `~/.pi/agent/AGENTS.md` symlinked to it |
+| Hermes Agent | Project `AGENTS.md` files, discovered from the working directory |
 
-Edit the linked file; both agents pick the change up.
+Edit the linked file; Claude Code, Codex, and Pi pick the change up.
 
 The step is non-destructive: an existing `~/.codex/config.toml` is left alone
 because it holds auth and project trust state.
@@ -24,4 +26,5 @@ that no longer exists. Each CLI's own default is used; set a model per machine
 with the tool's own `/model` command.
 
 The OS-neutral logic lives in [`shared/agents.sh`](../shared/agents.sh); the
-platform wrappers run the native installers and create the links.
+platform wrappers run the native installers and create the links. Pi and
+Hermes Agent are installed with their official cross-platform installers.
