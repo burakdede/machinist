@@ -7,6 +7,12 @@
 
 local opt = vim.opt
 
+-- Remote-plugin providers are optional and unused by this configuration.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- ─── Leader keys (must be set before any plugin loads) ────────────────────────
 vim.g.mapleader = " " -- <Space> as leader
 vim.g.maplocalleader = "\\" -- <\> as local leader

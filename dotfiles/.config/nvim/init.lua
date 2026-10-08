@@ -32,6 +32,8 @@ require("config.options")
 require("lazy").setup("plugins", {
 	defaults = { lazy = true },
 	install = { colorscheme = { "habamax" } },
+	-- This setup has no plugins that use LuaRocks packages.
+	rocks = { enabled = false },
 	checker = { enabled = false }, -- set true to auto-check for plugin updates
 	change_detection = { notify = false },
 	performance = {
