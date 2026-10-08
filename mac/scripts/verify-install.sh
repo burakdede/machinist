@@ -60,7 +60,6 @@ fi
 section "macOS-only tools"
 check_cmd_optional wezterm
 check_cmd_optional docker
-check_symlink "$HOME/.config/alacritty"
 
 section "Shell"
 # The whole point of initialising Homebrew from .zprofile is that brew's

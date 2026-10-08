@@ -169,8 +169,6 @@ behaves normally.
 `compinit` (~22ms). Both are the price of the features, not overhead this repo
 added.
 
-macOS-only configs (Alacritty, etc.) live in `mac/configs/.config/` and are symlinked separately by `mac/dotfiles.sh`.
-
 ### Editing configs
 
 ```bash

@@ -27,9 +27,8 @@ backup_target() {
     # Skip symlinks that already point into this repo.
     #
     # Compared against REPO_ROOT rather than DOTFILES_DIR: platform-specific
-    # configs live outside dotfiles/ (macOS links ~/.config/alacritty into
-    # mac/configs/), and matching only DOTFILES_DIR meant those were re-copied
-    # into a fresh backup directory on every single run.
+    # configs can live outside dotfiles/, and matching only DOTFILES_DIR meant
+    # those were re-copied into a fresh backup directory on every run.
     #
     # Plain readlink, not `readlink -f`: BSD readlink on macOS has no -f, and
     # the links we create point straight at their target, so one level is both
