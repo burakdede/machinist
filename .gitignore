@@ -8,6 +8,9 @@ Thumbs.db
 *.swo
 *~
 
+# Zed's local prompt library database is generated runtime state
+dotfiles/.config/zed/prompts/
+
 # Agent scratch memory -- not committed; each machine populates its own
 dotfiles/.config/agents/memory/*
 !dotfiles/.config/agents/memory/.gitkeep
