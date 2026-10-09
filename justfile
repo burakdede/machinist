@@ -11,7 +11,7 @@ verify:
     ./install.sh --verify
 
 # Everything that keeps the machine current, in one pass.
-update: update-system update-editor update-hooks
+update: update-system update-editor update-zed update-hooks
     @echo "Everything updated. Run 'just verify' to confirm."
 
 # Package managers and runtimes.
@@ -30,6 +30,20 @@ update-system:
     command -v uv >/dev/null 2>&1 && uv tool upgrade --all
     [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && \
         bash -c 'set +u; source "$HOME/.sdkman/bin/sdkman-init.sh"; sdk selfupdate || true'
+
+# Zed updates itself from inside the app; this target updates the macOS cask
+# when Homebrew manages it, and re-runs Zed's official installer on Linux.
+update-zed:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	if command -v brew >/dev/null 2>&1 && brew list --cask zed >/dev/null 2>&1; then
+		brew update && brew upgrade --cask zed
+	elif command -v zed >/dev/null 2>&1; then
+		curl --proto '=https' --tlsv1.2 -f https://zed.dev/install.sh | sh
+	else
+		echo "Zed is not installed; run ./install.sh --only editor" >&2
+		exit 1
+	fi
 
 # Neovim plugins, treesitter parsers and LSP servers.
 update-editor:

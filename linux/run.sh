@@ -38,7 +38,7 @@ Valid STEP values (run in this order on a fresh machine):
   configure       Git identity prompts -- writes to ~/.gitconfig.local
   shell           Install zsh and set it as the default login shell
   sdk             SDKMAN toolchain (Java, Kotlin, …)
-  editor          Install Neovim, register as vim/vi/editor
+  editor          Install Neovim and Zed; register Neovim as vim/vi/editor
   multiplexer     Tmux TPM bootstrap and config wiring
   terminal        Install WezTerm, set as default terminal
   agents          Claude Code and Codex -- install checks + central config symlinks
@@ -51,6 +51,7 @@ Environment variable overrides (identical on macOS and Ubuntu):
   MACHINIST_UPGRADE=1            Re-install tools even if already present.
   MACHINIST_SYSTEM_UPGRADE=1     Run apt upgrade and autoremove during system setup.
   MACHINIST_SKIP_<STEP>=1        Skip a specific step, e.g. MACHINIST_SKIP_SDK=1
+  MACHINIST_SKIP_ZED=1           Skip Zed while keeping Neovim
   MACHINIST_GIT_NAME / _EMAIL    Pre-seed git identity for unattended runs.
   MACHINIST_LOG_FILE             Override the run log path.
 

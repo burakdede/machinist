@@ -520,6 +520,7 @@ verify_shared() {
 
     section "Editor"
     check_cmd nvim
+    check_cmd zed "Zed"
     check_file "$HOME/.config/nvim/init.lua" "nvim init.lua"
 
     section "Agents"

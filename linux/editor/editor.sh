@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Neovim installation and system integration.
+# Neovim and Zed installation and system integration.
 #
 # Downloads the pinned stable Neovim release (see versions.txt) from GitHub,
 # installs it to /usr/local/bin/nvim, and registers it with update-alternatives
 # so that `vim`, `vi`, and `editor` all resolve to nvim.
 #
-# Skip:    MACHINIST_SKIP_NEOVIM=1
+# Skip:    MACHINIST_SKIP_NEOVIM=1 or MACHINIST_SKIP_ZED=1
 # Upgrade: MACHINIST_UPGRADE=1  (re-installs even if nvim is present)
+# Zed updates itself; re-run this step with MACHINIST_UPGRADE=1 to force the
+# official installer to refresh it.
 
 set -euo pipefail
 
@@ -231,6 +233,24 @@ preload_editor_tools() {
     log_success "Editor tooling preloaded; :Mason and :checkhealth show details."
 }
 
+install_zed() {
+	echo_header "Zed editor"
+
+	if command_exists zed && ! upgrade_enabled; then
+		log_info "Zed is already installed. (MACHINIST_UPGRADE=1 to update)"
+		return 0
+	fi
+
+	log_info "Installing Zed with the official Linux installer..."
+	curl --proto '=https' --tlsv1.2 -f https://zed.dev/install.sh | sh
+	hash -r 2>/dev/null || true
+	if command_exists zed; then
+		log_success "Zed installed. It will use Zed's native auto-update path."
+	else
+		log_warn "Zed installer completed, but the zed command is not on PATH yet."
+	fi
+}
+
 main() {
     check_root
     ensure_sudo
@@ -245,8 +265,14 @@ main() {
         log_info "Skipping Neovim (MACHINIST_SKIP_NEOVIM is set)."
     fi
 
+	if ! should_skip_step ZED; then
+		install_zed
+	else
+		log_info "Skipping Zed (MACHINIST_SKIP_ZED is set)."
+	fi
+
     echo_header "Editor setup complete"
-    log_success "Neovim is ready. Config: ~/.config/nvim/"
+    log_success "Neovim is ready; Zed is available as the backup editor."
 }
 
 main

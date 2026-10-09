@@ -58,6 +58,10 @@ zsh
 ffmpeg
 gh
 gnome-tweaks
+libsecret-1-0
+mesa-vulkan-drivers
+xdg-desktop-portal
+xdg-desktop-portal-gnome
 
 # Security and system safety
 fail2ban

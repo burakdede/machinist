@@ -64,7 +64,7 @@ for maintenance after the machine is configured.
 |---|---|
 | [Shell](docs/shell.md) | zsh and bash config, PATH rules, startup speed, aliases |
 | [Terminal](docs/terminal.md) | WezTerm and tmux, keybindings, theming, fixing input problems |
-| [Neovim](docs/neovim.md) | Plugins, LSP, treesitter, everyday workflows |
+| [Neovim](docs/neovim.md) | Primary editor: plugins, LSP, treesitter, everyday workflows |
 | [JVM toolchain](docs/jvm.md) | SDKMAN, GraalVM, Maven and Gradle |
 | [Git](docs/git.md) | Config decisions, git-lfs and ssh wiring, the global gitignore |
 | [Coding agents](docs/agents.md) | Native installers and shared instructions for Claude Code, Codex, Pi, and Hermes Agent |
@@ -127,7 +127,7 @@ list, that is how the two machines drift apart.
 | `configure` | Prompts for git name/email → writes `~/.gitconfig.local` |
 | `shell` | Sets Homebrew zsh as default shell, installs antidote + powerlevel10k |
 | `sdk` | SDKMAN -- Java, Kotlin |
-| `editor` | Neovim via Homebrew, `vi`/`vim` shims, lazy.nvim plugin bootstrap |
+| `editor` | Neovim via Homebrew plus Zed via Homebrew Cask, `vi`/`vim` shims, lazy.nvim plugin bootstrap |
 | `multiplexer` | Tmux config wiring + TPM (Tmux Plugin Manager) |
 | `terminal` | WezTerm via Homebrew Cask |
 | `agents` | Claude Code, Codex, Pi, and Hermes Agent -- native installers + config links |
@@ -147,7 +147,7 @@ Re-install: `MACHINIST_UPGRADE=1 ./run.sh --only editor`
 | `configure` | Prompts for git name/email → writes `~/.gitconfig.local` |
 | `shell` | Installs zsh, sets it as default shell |
 | `sdk` | SDKMAN -- Java, Kotlin |
-| `editor` | Neovim from GitHub releases, `vi`/`vim`/`editor` alternatives |
+| `editor` | Neovim from GitHub releases plus Zed's official Linux installer, `vi`/`vim`/`editor` alternatives |
 | `multiplexer` | Tmux config wiring + TPM |
 | `terminal` | WezTerm from GitHub releases, sets as default terminal |
 | `agents` | Claude Code, Codex, Pi, and Hermes Agent -- native installers + config links |

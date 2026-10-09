@@ -15,7 +15,7 @@ inheriting.
 | Python CLIs | uv | Isolated tool installs, no global pip |
 | Terminal | WezTerm | Same config and same keys on both platforms; see [Terminal](terminal.md) |
 | Multiplexer | tmux, OSC 52 clipboard | Copy behaves identically on macOS and Ubuntu, and over SSH; see [`tmux.conf`](../dotfiles/.config/tmux/tmux.conf) |
-| Editor | Neovim + lazy.nvim, Treesitter `main` branch | One Lua config, lazy loading, and exact plugin commits shared across platforms; see [Neovim](neovim.md) |
+| Editor | Neovim + lazy.nvim, with Zed as the visual backup | Neovim remains the primary terminal editor; Zed uses native platform installers and its own update path |
 | Prompt | powerlevel10k with instant prompt | |
 
 **One runtime manager, not several.** mise owns Python, Node and Go; SDKMAN

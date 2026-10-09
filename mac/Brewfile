@@ -122,3 +122,4 @@ cask "stats"                     # menubar system monitor
 cask "the-unarchiver"
 cask "wezterm"                   # primary terminal emulator
 cask "whatsapp"
+cask "zed"                         # backup visual editor; native updates

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Neovim installation and setup for macOS.
+# Neovim and Zed installation and setup for macOS.
 #
 # Installs neovim via Homebrew (already in Brewfile as a safety net),
 # creates vi/vim → nvim shims in ~/.local/bin, and bootstraps lazy.nvim plugins.
@@ -20,6 +20,9 @@
 #
 # ── Upgrading Neovim ─────────────────────────────────────────────────────────
 #   brew upgrade neovim
+#
+# ── Upgrading Zed ────────────────────────────────────────────────────────────
+#   brew upgrade --cask zed
 #
 # Skip:    MACHINIST_SKIP_NEOVIM=1 ./run.sh --only editor
 # Upgrade: MACHINIST_UPGRADE=1     ./run.sh --only editor
@@ -57,6 +60,41 @@ install_neovim() {
     brew install neovim
     log_success "Neovim $(installed_nvim_version) installed."
     assert_neovim_floor
+}
+
+install_zed() {
+	echo_header "Zed editor"
+
+	if brew list --cask zed &>/dev/null; then
+		if upgrade_enabled; then
+			log_info "Updating Zed via Homebrew Cask..."
+			brew upgrade --cask zed
+		else
+			log_info "Zed is already installed. (MACHINIST_UPGRADE=1 to update)"
+		fi
+	else
+		log_info "Installing Zed via Homebrew Cask..."
+		brew install --cask zed
+	fi
+
+    # Keep the CLI user-local so this step does not need to modify /usr/local.
+	local cli=""
+	for cli_path in \
+		"/Applications/Zed.app/Contents/MacOS/cli" \
+		"$HOME/Applications/Zed.app/Contents/MacOS/cli"; do
+		if [[ -x "$cli_path" ]]; then
+			cli="$cli_path"
+			break
+		fi
+	done
+
+	if [[ -n "$cli" ]]; then
+		mkdir -p "$HOME/.local/bin"
+		ln -sf "$cli" "$HOME/.local/bin/zed"
+		log_success "Zed installed; zed CLI linked to ~/.local/bin/zed."
+	else
+		log_warn "Zed installed, but its bundled CLI was not found."
+	fi
 }
 
 # macOS tracks Homebrew's stable Neovim rather than pinning an exact patch the
@@ -210,8 +248,14 @@ main() {
     bootstrap_plugins
     preload_editor_tools
 
+	if should_skip_step ZED; then
+		log_info "Skipping Zed (MACHINIST_SKIP_ZED is set)."
+	else
+		install_zed
+	fi
+
     echo_header "Editor setup complete"
-    log_success "Neovim is ready."
+    log_success "Neovim is ready; Zed is available as the backup editor."
     log_info "Config: ~/.config/nvim/  (symlinked from dotfiles/)"
     log_info "Servers and parsers are preloaded, so the first launch is instant."
 }

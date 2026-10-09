@@ -13,7 +13,7 @@
 #  3. configure   -- interactive git identity prompts → ~/.gitconfig.local
 #  4. shell       -- set zsh as default shell, install antidote + powerlevel10k
 #  5. sdk         -- SDKMAN (Java, Kotlin, …)
-#  6. editor      -- neovim + lazy.nvim plugin bootstrap, vi/vim shims
+#  6. editor      -- neovim + Zed, lazy.nvim plugin bootstrap, vi/vim shims
 #  7. multiplexer -- tmux config wiring + TPM (Tmux Plugin Manager)
 #  8. terminal    -- WezTerm via Homebrew Cask
 #  9. agents      -- Claude Code and Codex -- install checks + central config symlinks
@@ -74,7 +74,7 @@ Valid STEP values (run in this order on a fresh machine):
   configure       Git identity prompts -- writes to ~/.gitconfig.local
   shell           Set zsh as default shell, install antidote + powerlevel10k
   sdk             SDKMAN toolchain (Java, Kotlin, …)
-  editor          Neovim via Homebrew + lazy.nvim bootstrap, vi/vim shims
+  editor          Neovim + Zed via Homebrew + lazy.nvim bootstrap, vi/vim shims
   multiplexer     Tmux config wiring + TPM (Tmux Plugin Manager)
   terminal        WezTerm via Homebrew Cask
   agents          Claude Code and Codex -- install checks + central config symlinks
@@ -91,6 +91,7 @@ Dependencies:
 Environment variable overrides (identical on macOS and Ubuntu):
   MACHINIST_UPGRADE=1            Re-install tools even if already present.
   MACHINIST_SKIP_<STEP>=1        Skip a specific step, e.g. MACHINIST_SKIP_SDK=1
+  MACHINIST_SKIP_ZED=1           Skip Zed while keeping Neovim
   MACHINIST_GIT_NAME / _EMAIL    Pre-seed git identity for unattended runs.
   MACHINIST_LOG_FILE             Override the run log path.
 EOF
