@@ -1,10 +1,12 @@
 [
+  // Preserve the familiar explicit save action in every editor mode.
   {
     "context": "Editor && !menu",
     "bindings": {
       "ctrl-s": "workspace::Save"
     }
   },
+  // Extend Ctrl-W navigation from editor panes to Zed's docks.
   {
     "context": "Dock",
     "bindings": {
@@ -14,12 +16,14 @@
       "ctrl-w l": "workspace::ActivatePaneRight"
     }
   },
+  // Use the common Neovim insert-mode escape chord.
   {
     "context": "vim_mode == insert",
     "bindings": {
       "j k": "vim::NormalBefore"
     }
   },
+  // Treat camelCase and snake_case components as individual words.
   {
     "context": "VimControl && !menu && vim_mode != operator",
     "bindings": {
@@ -29,19 +33,18 @@
       "g e": "vim::PreviousSubwordEnd"
     }
   },
+  // Match Neovim surround workflows when a visual selection is active.
   {
     "context": "vim_mode == visual",
     "bindings": {
       "shift-s": "vim::PushAddSurrounds"
     }
   },
+  // Match Neovim's default Y behavior: yank from the cursor to end of line.
   {
     "context": "vim_mode == normal && !menu",
     "bindings": {
-      "shift-y": [
-        "workspace::SendKeystrokes",
-        "y $"
-      ]
+      "shift-y": ["workspace::SendKeystrokes", "y $"]
     }
   }
 ]

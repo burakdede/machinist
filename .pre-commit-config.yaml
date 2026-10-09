@@ -19,6 +19,8 @@ repos:
       - id: check-yaml
         args: [--unsafe]     # allow custom YAML tags
       - id: check-json
+        # Zed settings and keymaps are JSONC so their intent stays documented.
+        exclude: '^dotfiles/\.config/zed/(settings|keymap)\.json$'
       - id: check-toml
       - id: check-merge-conflict
       - id: check-added-large-files

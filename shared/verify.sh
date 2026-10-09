@@ -531,13 +531,31 @@ verify_shared() {
 		.buffer_font_family == "JetBrainsMono Nerd Font" and
 		.buffer_font_size == 15 and
 		.terminal.font_family == "JetBrainsMono Nerd Font" and
+		.cursor_blink == false and
+		.active_pane_modifiers.inactive_opacity == 0.92 and
+		.gutter.min_line_number_digits == 3 and
+		.scrollbar.show == "auto" and
+		.show_whitespaces == "all" and
 		.confirm_quit == true and
 		.tabs.git_status == true and
 		.tabs.show_diagnostics == "errors" and
+		.tabs.show_nav_history_buttons == false and
+		.toolbar.quick_actions == false and
+		.status_bar.cursor_position_button == true and
+		.file_finder.modal_max_width == "medium" and
+		.session.trust_all_worktrees == true and
+		.show_completions_on_input == true and
+		.show_completion_documentation == true and
+		.auto_signature_help == true and
+		.inlay_hints.enabled == true and
+		.inlay_hints.show_parameter_hints == true and
+		.linked_edits == true and
+		.colorize_brackets == true and
 		.lsp.gopls.initialization_options.gofumpt == true and
 		.lsp."rust-analyzer".initialization_options.check.command == "clippy" and
 		.auto_install_extensions.lua == true and
 		.auto_install_extensions.html == true and
+		.auto_install_extensions."catppuccin-icons" == true and
 		.auto_install_extensions.catppuccin == true and
 		.languages.JavaScript.format_on_save == "on" and
 		.languages.TypeScript.format_on_save == "on" and
@@ -547,7 +565,7 @@ verify_shared() {
 		.languages.Rust.formatter == "language_server" and
 		.theme.dark == "Catppuccin Mocha" and
 		.theme.light == "Catppuccin Latte"
-    ' "$HOME/.config/zed/settings.json" >/dev/null 2>&1; then
+    ' <(sed -E '/^[[:space:]]*\/\//d' "$HOME/.config/zed/settings.json") >/dev/null 2>&1; then
 		ok "Zed Vim mode and Catppuccin theme configured"
     else
 		fail "Zed Vim mode or Catppuccin theme is not configured"

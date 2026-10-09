@@ -1,8 +1,15 @@
 {
-  "agent_ui_font_size": 14.0,
+  // Match Neovim and WezTerm while keeping the UI readable at normal density.
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  // Keep the agent panel, editor, terminal, and UI at one readable scale.
+  "agent_ui_font_size": 15.0,
   "terminal": {
     "font_family": "JetBrainsMono Nerd Font",
-    "font_size": 14.0,
+    "font_size": 15.0,
     "alternate_scroll": "on",
     "working_directory": "current_project_directory"
   },
@@ -10,6 +17,29 @@
   "buffer_font_size": 15.0,
   "buffer_line_height": "comfortable",
   "ui_font_size": 15.0,
+  // Keep focus on the code and make inactive panes visually recede slightly.
+  "cursor_blink": false,
+  "active_pane_modifiers": {
+    "inactive_opacity": 0.92
+  },
+  // Preserve the useful Vim/Neovim gutter signals without changing their meaning.
+  "gutter": {
+    "line_numbers": true,
+    "runnables": true,
+    "breakpoints": true,
+    "folds": true,
+    "min_line_number_digits": 3
+  },
+  // Keep the scrollbar compact while retaining Git, search, and diagnostic marks.
+  "scrollbar": {
+    "show": "auto",
+    "cursors": true,
+    "git_diff": true,
+    "search_results": true,
+    "selected_text": true,
+    "selected_symbol": true,
+    "diagnostics": "all"
+  },
   "confirm_quit": true,
   "autoscroll_on_clicks": true,
   "file_scan_exclusions": [
@@ -22,11 +52,56 @@
     "..."
   ],
   "tabs": {
+    // History matches the way Neovim buffers are revisited after closing one.
     "activate_on_close": "history",
     "file_icons": true,
     "git_status": true,
-    "show_diagnostics": "errors"
+    "show_diagnostics": "errors",
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": true
   },
+  // Give paths and symbols enough room without making the finder dominate the screen.
+  "file_finder": {
+    "modal_max_width": "medium"
+  },
+  // Keep navigation context, but remove actions that compete with Vim commands.
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": false,
+    "selections_menu": true,
+    "agent_review": true,
+    "code_actions": false
+  },
+  // Keep only status information that helps diagnose files and navigation.
+  "status_bar": {
+    "active_language_button": true,
+    "cursor_position_button": true,
+    "line_endings_button": false
+  },
+  // Trust every worktree so project settings and language tooling start immediately.
+  // This skips Zed's per-worktree trust prompt; only open repositories you trust.
+  "session": {
+    "trust_all_worktrees": true
+  },
+  // Make LSP completion useful without requiring a manual trigger.
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  // Show type and parameter information while keeping hints visually subtle.
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "show_background": false,
+    "edit_debounce_ms": 700,
+    "scroll_debounce_ms": 50
+  },
+  // Keep HTML tag pairs and other LSP-linked ranges synchronized.
+  "linked_edits": true,
+  // Make nested syntax easier to scan in JavaScript, TypeScript, and CSS.
+  "colorize_brackets": true,
   "vim_mode": true,
   "relative_line_numbers": "enabled",
   "vim": {
@@ -38,11 +113,15 @@
     "highlight_on_yank_duration": 200
   },
   "current_line_highlight": "line",
+  // Match Neovim's always-on list mode for spotting tabs and trailing spaces.
+  "show_whitespaces": "all",
   "tab_size": 4,
   "hard_tabs": false,
   "preferred_line_length": 100,
   "code_lens": "on",
+  // Keep language-server checks aligned with the Neovim workflow.
   "lsp": {
+    // Go formatting and static analysis run through gopls.
     "gopls": {
       "initialization_options": {
         "gofumpt": true,
@@ -52,6 +131,7 @@
         }
       }
     },
+    // Rust saves use rust-analyzer formatting and Clippy diagnostics.
     "rust-analyzer": {
       "initialization_options": {
         "check": {
@@ -60,7 +140,9 @@
       }
     }
   },
+  // Save actions are language-specific so project-local configs remain authoritative.
   "languages": {
+    // Ruff handles Python formatting and import organization.
     "Python": {
       "format_on_save": "on",
       "formatter": {
@@ -72,6 +154,7 @@
         "source.organizeImports.ruff": true
       }
     },
+    // ESLint fixes run before Prettier formats JavaScript.
     "JavaScript": {
       "format_on_save": "on",
       "formatter": [
@@ -86,6 +169,7 @@
         }
       ]
     },
+    // ESLint fixes run before Prettier formats TypeScript.
     "TypeScript": {
       "format_on_save": "on",
       "formatter": [
@@ -100,6 +184,7 @@
         }
       ]
     },
+    // TSX uses the same ESLint and Prettier pipeline as TypeScript.
     "TSX": {
       "format_on_save": "on",
       "formatter": [
@@ -114,6 +199,7 @@
         }
       ]
     },
+    // Prettier keeps HTML structure consistent on save.
     "HTML": {
       "format_on_save": "on",
       "formatter": {
@@ -123,6 +209,7 @@
         }
       }
     },
+    // Prettier keeps CSS syntax and layout consistent on save.
     "CSS": {
       "format_on_save": "on",
       "formatter": {
@@ -132,6 +219,7 @@
         }
       }
     },
+    // Rust formatting is provided by rust-analyzer; diagnostics use Clippy.
     "Rust": {
       "format_on_save": "on",
       "formatter": "language_server"
@@ -145,10 +233,18 @@
   "scroll_beyond_last_line": "vertical_scroll_margin",
   "auto_install_extensions": {
     "catppuccin": true,
+    // Keep file and folder icons aligned with the active Catppuccin flavor.
+    "catppuccin-icons": true,
     "html": true,
     "lua": true
   },
   "theme": {
+    "mode": "dark",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  // Use matching icon palettes for light and dark workspaces.
+  "icon_theme": {
     "mode": "dark",
     "light": "Catppuccin Latte",
     "dark": "Catppuccin Mocha"
