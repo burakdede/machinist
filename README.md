@@ -65,6 +65,7 @@ for maintenance after the machine is configured.
 | [Shell](docs/shell.md) | zsh and bash config, PATH rules, startup speed, aliases |
 | [Terminal](docs/terminal.md) | WezTerm and tmux, keybindings, theming, fixing input problems |
 | [Neovim](docs/neovim.md) | Primary editor: plugins, LSP, treesitter, everyday workflows |
+| Zed | Backup visual editor, Vim mode, Catppuccin theme, native updates |
 | [JVM toolchain](docs/jvm.md) | SDKMAN, GraalVM, Maven and Gradle |
 | [Git](docs/git.md) | Config decisions, git-lfs and ssh wiring, the global gitignore |
 | [Coding agents](docs/agents.md) | Native installers and shared instructions for Claude Code, Codex, Pi, and Hermes Agent |

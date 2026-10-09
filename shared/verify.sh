@@ -522,6 +522,36 @@ verify_shared() {
     check_cmd nvim
     check_cmd zed "Zed"
     check_file "$HOME/.config/nvim/init.lua" "nvim init.lua"
+    check_file "$HOME/.config/zed/settings.json" "zed settings.json"
+    check_file "$HOME/.config/zed/keymap.json" "zed keymap.json"
+    if [[ -f "$HOME/.config/zed/settings.json" ]] && jq -e '
+		.vim_mode == true and
+		.relative_line_numbers == "enabled" and
+		.vim.toggle_relative_line_numbers == true and
+		.buffer_font_family == "JetBrainsMono Nerd Font" and
+		.buffer_font_size == 15 and
+		.terminal.font_family == "JetBrainsMono Nerd Font" and
+		.confirm_quit == true and
+		.tabs.git_status == true and
+		.tabs.show_diagnostics == "errors" and
+		.lsp.gopls.initialization_options.gofumpt == true and
+		.lsp."rust-analyzer".initialization_options.check.command == "clippy" and
+		.auto_install_extensions.lua == true and
+		.auto_install_extensions.html == true and
+		.auto_install_extensions.catppuccin == true and
+		.languages.JavaScript.format_on_save == "on" and
+		.languages.TypeScript.format_on_save == "on" and
+		.languages.TSX.format_on_save == "on" and
+		.languages.HTML.format_on_save == "on" and
+		.languages.CSS.format_on_save == "on" and
+		.languages.Rust.formatter == "language_server" and
+		.theme.dark == "Catppuccin Mocha" and
+		.theme.light == "Catppuccin Latte"
+    ' "$HOME/.config/zed/settings.json" >/dev/null 2>&1; then
+		ok "Zed Vim mode and Catppuccin theme configured"
+    else
+		fail "Zed Vim mode or Catppuccin theme is not configured"
+    fi
 
     section "Agents"
     check_cmd_optional claude   "Claude Code"
@@ -535,7 +565,7 @@ verify_shared() {
     for f in .zshrc .zshenv .zprofile .zsh_plugins.txt .p10k.zsh .gitconfig .gitignore_global; do
         check_symlink "$HOME/$f"
     done
-    for f in nvim tmux wezterm mise agents; do
+    for f in nvim tmux wezterm mise agents zed; do
         check_symlink "$HOME/.config/$f"
     done
 
